@@ -4,8 +4,8 @@ import java.util.Arrays;
 import doodlepad.*;
 
 public class Maze extends Pad{
-	int width = 50;
-	int height = 50;
+	int width = 500;
+	int height = 500;
 	enum Orientation{
 		up, right, down, left
 	}
