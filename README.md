@@ -19,4 +19,8 @@ Start game by running "java -jar TestRun.jar" from terminal (the file is located
 
 ##### Is there anything that you implemented but doesn't currently work?
 * The AStar algorithm can find the best path, but we have not yet connected it to the maze and the enemy.
+<<<<<<< HEAD
 * The maze is generated and the user can control the player, but the enemy is not yet on the maze
+=======
+* The maze is generated and the user can control the player, but the enemy is not yet on the maze
+>>>>>>> branch 'master' of https://github.com/wustlcse237sp20/project-237chasinggame.git
