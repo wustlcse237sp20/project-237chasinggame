@@ -2,10 +2,29 @@ package code;
 
 
 import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class MazeTest extends Maze {
-	Maze m = new Maze();
+	private Maze maze;
+	
+	@BeforeEach
+	void setupTestingObjects() {
+		maze = new Maze();
+	}
+	
+	@Test
+//	void 
+	//existence of maze
+	
+	//no boundaries
+	
+	//rectangle moved
+	
+	//check wall boundary
+	
+	//
+	
 	@Test
 	void testRemoveWallsToMakeValid() {
 		//Make sure maze is solvable
