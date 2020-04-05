@@ -9,7 +9,7 @@ Start game by running "java -jar RunGame.jar" from terminal If that doesn't work
 ### Iteration 1 ###
 
 ##### What user stories were completed this iteration?
-* The Programmer should have the ability to use the AStar algorithm given a maze
+* The Programmer should have the ability to use the AStar algorithm given a maze(run from eclipse or other ide)
 * The user should be able to see the maze and the player
 * The user should be able to control the player by using the W,A,S,D keys (click on window if not working)
 
