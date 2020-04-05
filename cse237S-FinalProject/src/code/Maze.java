@@ -16,16 +16,21 @@ public class Maze extends Pad{
 	boolean[][] visitedBFS = new boolean[height + 1][width + 1];
     public Maze(){
     	super(750, 750);
-    	drawMaze();
+    	drawMaze(true);
     }
-    public void drawMaze() {
+    // bool drawMaze indicates whether you should draw maze for the human on the GUI, which would slow down tests by a lot
+    public Maze(boolean drawMaze) {
+    	super(750, 750);
+    	drawMaze(drawMaze);
+    }
+    public void drawMaze(boolean drawMaze) {
     	// put in all walls
     	putInAllWalls();
     	//remove starting wall
     	removeStartWall();
     	removeEndWall();
     	removeWallsToMakeValid(5,5);
-    	drawWalls();
+    	if (drawMaze) {drawWalls();}
     	setupCharacter();
     	r.toFront();
     	//uncomment below for bot to solve following right wall
@@ -104,10 +109,7 @@ public class Maze extends Pad{
     	
     }
     public void setupCharacter() {
-    	r = new Rectangle(1,1,9,9);
-    	r.setStrokeWidth(0);
-    	r.setFillColor(255, 0, 0);
-
+    	r = (new Player()).getRectangle();
     }
     public void onKeyPressed(String keyText, String keyModifiers) {
     	if(r.getX() >= width && r.getY() >= height - 10) {
@@ -224,11 +226,14 @@ public class Maze extends Pad{
     public int getMazeHeight() {
     	return this.height;
     }
-    public int getMazeWidtht() {
+    public int getMazeWidth() {
     	return this.width;
     }
     public boolean[][] getWalls() {
     	return this.walls;
+    }
+    public Rectangle getPlayer() {
+    	return this.r;
     }
 // Uncomment main to test
 //    public static void main(String[] args) {

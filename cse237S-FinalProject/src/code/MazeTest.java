@@ -1,27 +1,83 @@
 package code;
 
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import doodlepad.*;
+
 class MazeTest extends Maze {
-	private Maze maze;
 	
-	@BeforeEach
-	void setupTestingObjects() {
-		maze = new Maze();
+	//removes the need to have BeforeEach code segment to construct new maze objects, as this does it for us
+	public MazeTest() {
+		super(false);
+	}
+
+	@Test
+	void testMazeCreation() {
+		for(int r = 0; r < 10; r++) {
+			if(walls[r][0]) {
+				fail("Starting walls not removed");
+			}
+		}
+		assertTrue(true); // if I arrive here, no error occurred
 	}
 	
 	@Test
-//	void 
-	//existence of maze
+	void boundaryCheck() {
+		for(int h = 10; h <= this.getMazeHeight(); h++) {
+			if(!this.getWalls()[h][0]) {
+				fail("Erroneous left boundary walls removed");
+			}
+		}
+		for(int w = 1; w <= this.getMazeWidth(); w++) {
+			if(!this.getWalls()[0][w]) {
+				fail("Erroneous top boundary walls removed");
+			}
+		}
+		for(int w = 0; w <= this.getMazeWidth() - 1; w++) {
+			if(!this.getWalls()[this.getMazeHeight()][w]) {
+				fail("Erroneous bottom boundary walls removed");
+			}
+		}
+		for(int h = this.getMazeHeight()-10; h >= 0; h--) {
+			if(!this.getWalls()[h][this.getMazeWidth()]) {
+				fail("Erroneous right boundary walls removed");
+			}
+		}
+		assertTrue(true); // if I arrive here, no failures
+	}
 	
-	//no boundaries
+	@Test
+	void testWallBarrier() {
+		boolean[][] walls = this.getWalls();
+		Rectangle r = this.getPlayer();
+		while (!walls[1][(int)r.getX()+9]) {
+			assertTrue(this.movePlayerRight());
+		}
+		assertTrue(false == this.movePlayerRight());
+	}
 	
-	//rectangle moved
-	
-	//check wall boundary
+	@Test
+	void testPlayerMovement() {
+		boolean[][] walls = this.getWalls();
+		Rectangle r = this.getPlayer();
+		int oldX = (int)r.getX();
+		int oldY = (int)r.getY();
+		if(!walls[1][(int)r.getX()+9]) {
+			this.movePlayerRight();
+			assert((oldX + 10) == (int)r.getX() && oldY == (int)r.getY());
+		}
+		else {
+			this.movePlayerDown();
+			assert(oldX == (int)r.getX() && (oldY + 10) == (int)r.getY());
+		}
+		
+	}
 	
 	//
 	
