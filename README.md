@@ -4,7 +4,7 @@
 
 Our project will implement artificial intelligence algorithms such as the A* algorithm and the Q-Learning algorithm in order to make one player run away from another. After sufficient training, the human should be able to play as the player chasing and the player being chased. 
 
-Start game by running "java -jar TestRun.jar" (the file is located in the second subfolder). If that doesn't work due to dependencies, resort to running RunGame.java in Eclipse or IDE. 
+Start game by running "java -jar TestRun.jar" (the file is located in the second subfolder). If that doesn't work due to dependencies, resort to running RunGame.java (located in src/code/) in Eclipse or IDE. 
 
 ### Iteration 1 ###
 
