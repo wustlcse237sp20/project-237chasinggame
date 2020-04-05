@@ -16,21 +16,27 @@ public class Maze extends Pad{
 	boolean[][] visitedBFS = new boolean[height + 1][width + 1];
     public Maze(){
     	super(750, 750);
-    	drawMaze();
+    	drawMaze(true);
     }
-    public void drawMaze() {
+    // bool drawMaze indicates whether you should draw maze for the human on the GUI, which would slow down tests by a lot
+    public Maze(boolean drawMaze) {
+    	super(750, 750);
+    	drawMaze(drawMaze);
+    }
+    public void drawMaze(boolean drawMaze) {
     	// put in all walls
     	putInAllWalls();
     	//remove starting wall
     	removeStartWall();
     	removeEndWall();
     	removeWallsToMakeValid(5,5);
-    	drawWalls();
+    	if (drawMaze) {drawWalls();}
     	setupCharacter();
     	r.toFront();
     	//uncomment below for bot to solve following right wall
 //    	rightWallBot();
     	}
+    //walls are length 10 and begin at (10n,10n)
 	public void putInAllWalls() {
     	for(int r=0; r<=height; r+= 10) {
     		for(int c = 0; c <= width; c++) {
@@ -91,25 +97,19 @@ public class Maze extends Pad{
     	for(int r = 0; r <= height; r++) {
     		for(int c = 0; c <= width; c++) {
     			if(walls[r][c])
-	    	    	for(int d=-1; d <= 1; d+=2) {
-	    	    		if(r + d > -1 && r + d<= height && walls[r + d][c]) {
-	    	    			new Line(c, r, c, r + d);
+	    	    		if(r + 1<= height && walls[r + 1][c]) {
+	    	    			new Line(c, r, c, r + 1);
 	    	    		}
-	    	    		if(c + d > -1 && c + d <= width && walls[r][c + d]) {
-	    	    			new Line(c, r, c + d, r);
-	    	    		}
-	    	    	}
-    	    	
+	    	    		if(c + 1 <= width && walls[r][c + 1]) {
+	    	    			new Line(c, r, c + 1, r);
+	    	    		}    	    	
     		}
     	}
     	
     	
     }
     public void setupCharacter() {
-    	r = new Rectangle(1,1,9,9);
-    	r.setStrokeWidth(0);
-    	r.setFillColor(255, 0, 0);
-
+    	r = (new Player()).getRectangle();
     }
     public void onKeyPressed(String keyText, String keyModifiers) {
     	if(r.getX() >= width && r.getY() >= height - 10) {
@@ -223,7 +223,20 @@ public class Maze extends Pad{
 	    		}
 	    	}
     }
-    public static void main(String[] args) {
-    	Maze m = new Maze();
+    public int getMazeHeight() {
+    	return this.height;
     }
+    public int getMazeWidth() {
+    	return this.width;
+    }
+    public boolean[][] getWalls() {
+    	return this.walls;
+    }
+    public Rectangle getPlayer() {
+    	return this.r;
+    }
+// Uncomment main to test
+//    public static void main(String[] args) {
+//    	Maze m = new Maze();
+//    }
 }
