@@ -9,7 +9,11 @@ Our project will implement artificial intelligence algorithms such as the A* alg
 ##### What user stories were completed this iteration?
 * The Programmer should have the ability to use the AStar algorithm given a maze
 * The user should be able to see the maze and the player
+<<<<<<< HEAD
 * The user should be able to control the player by using the W,A,S,D keys (click on window if not working)
+=======
+* The user should be able to control the player
+>>>>>>> branch 'Dev' of https://github.com/wustlcse237sp20/project-237chasinggame.git
 
 ##### What user stories do you intend to complete next iteration?
 * The program should be runnable from the command prompt
@@ -17,4 +21,8 @@ Our project will implement artificial intelligence algorithms such as the A* alg
 
 ##### Is there anything that you implemented but doesn't currently work?
 * The AStar algorithm can find the best path, but we have not yet connected it to the maze and the enemy.
+<<<<<<< HEAD
 * The maze is generated and the user canc control the player, but the enemy is not yet on the maze
+=======
+* The maze is generated and the user canc control the player, but the enemy is not yet on the maze
+>>>>>>> branch 'Dev' of https://github.com/wustlcse237sp20/project-237chasinggame.git
