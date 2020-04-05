@@ -31,6 +31,7 @@ public class Maze extends Pad{
     	//uncomment below for bot to solve following right wall
 //    	rightWallBot();
     	}
+    //walls are length 10 and begin at (10n,10n)
 	public void putInAllWalls() {
     	for(int r=0; r<=height; r+= 10) {
     		for(int c = 0; c <= width; c++) {
@@ -91,15 +92,12 @@ public class Maze extends Pad{
     	for(int r = 0; r <= height; r++) {
     		for(int c = 0; c <= width; c++) {
     			if(walls[r][c])
-	    	    	for(int d=-1; d <= 1; d+=2) {
-	    	    		if(r + d > -1 && r + d<= height && walls[r + d][c]) {
-	    	    			new Line(c, r, c, r + d);
+	    	    		if(r + 1<= height && walls[r + 1][c]) {
+	    	    			new Line(c, r, c, r + 1);
 	    	    		}
-	    	    		if(c + d > -1 && c + d <= width && walls[r][c + d]) {
-	    	    			new Line(c, r, c + d, r);
-	    	    		}
-	    	    	}
-    	    	
+	    	    		if(c + 1 <= width && walls[r][c + 1]) {
+	    	    			new Line(c, r, c + 1, r);
+	    	    		}    	    	
     		}
     	}
     	
