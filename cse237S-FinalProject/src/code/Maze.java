@@ -221,7 +221,17 @@ public class Maze extends Pad{
 	    		}
 	    	}
     }
-    public static void main(String[] args) {
-    	Maze m = new Maze();
+    public int getMazeHeight() {
+    	return this.height;
     }
+    public int getMazeWidtht() {
+    	return this.width;
+    }
+    public boolean[][] getWalls() {
+    	return this.walls;
+    }
+// Uncomment main to test
+//    public static void main(String[] args) {
+//    	Maze m = new Maze();
+//    }
 }
