@@ -4,6 +4,8 @@
 
 Our project will implement artificial intelligence algorithms such as the A* algorithm and the Q-Learning algorithm in order to make one player run away from another. After sufficient training, the human should be able to play as the player chasing and the player being chased. 
 
+Start game by running RunGame.java in Eclipse or IDE. 
+
 ### Iteration 1 ###
 
 ##### What user stories were completed this iteration?
