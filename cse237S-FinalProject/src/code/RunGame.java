@@ -1,5 +1,4 @@
 package code;
-
 public class RunGame {
 	public static void main (String[] args) {
 		System.out.println("Starting maze game!");
