@@ -14,6 +14,7 @@ class AStarAlgorithmTest {
 		int startx = 3, starty = 3;
 		AStar as = new AStar(walls, startx, starty, 8, 8);
 		AStar.printPath(walls, as.getPath(), startx, starty);
+		
 	}
 
 }
