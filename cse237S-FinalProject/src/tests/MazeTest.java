@@ -1,4 +1,4 @@
-package code;
+package tests;
 
 
 import static org.junit.Assert.assertTrue;
@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
+import code.Maze;
 import doodlepad.*;
 
 class MazeTest extends Maze {
@@ -19,7 +20,7 @@ class MazeTest extends Maze {
 	@Test
 	void testMazeCreation() {
 		for(int r = 0; r < 10; r++) {
-			if(walls[r][0]) {
+			if(this.getWalls()[r][0]) {
 				fail("Starting walls not removed");
 			}
 		}
@@ -83,7 +84,7 @@ class MazeTest extends Maze {
 	@Test
 	void testRemoveWallsToMakeValid() {
 		//Make sure maze is solvable
-		boolean solutionFound = dfs(walls, 1, 1);
+		boolean solutionFound = dfs(this.getWalls(), 1, 1);
 		Assert.assertTrue(solutionFound);
 //		fail("Not yet implemented");
 	}
@@ -92,17 +93,17 @@ class MazeTest extends Maze {
 		return dfsHelp(w,visited,r,c);
 	}
 	boolean dfsHelp(boolean[][] w, boolean[][] visited, int r, int c) {
-		if(r == height - 9 && c == width - 9) {
+		if(r == this.getMazeHeight() - 9 && c == this.getMazeWidth() - 9) {
 			return true;
 		}
 		visited[r][c] = true;
     	for(int d=-1; d <= 1; d+=2) {
-    		if(r + d * 10 > -1 && r + d * 10 < height && !visited[r + d * 10][c]) {
+    		if(r + d * 10 > -1 && r + d * 10 < this.getMazeHeight() && !visited[r + d * 10][c]) {
     			if(dfsHelp(w, visited, r+d*10, c)) {
     				return true;
     			}
     		}
-    		if(c + d * 10 > -1 && c + d * 10 < width && !visited[r][c + d * 10]) {
+    		if(c + d * 10 > -1 && c + d * 10 < this.getMazeWidth() && !visited[r][c + d * 10]) {
     			if(dfsHelp(w, visited, r, c + d * 10)) {
     				return true;
     			}
