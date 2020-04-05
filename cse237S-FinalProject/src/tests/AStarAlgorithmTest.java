@@ -77,7 +77,7 @@ class AStarAlgorithmTest {
 					continue;
 				}
 				int endx = i, endy = j;
-				int minMoves = (int)Math.sqrt(Math.pow(i,2)+Math.pow(j,2));
+				int minMoves = Math.abs(startx-endx)+Math.abs(starty-endy);
 				AStar as = new AStar(walls, startx, starty, endx, endy);
 				int numMoves = as.getPath().size();
 				assertTrue(numMoves>=minMoves);
