@@ -25,6 +25,22 @@ public class AStar {
 		this.endy = endy;
 	}
 	
+	public boolean[][] getWalls(){
+		return this.walls;
+	}
+	public int getStartX() {
+		return this.startx;
+	}
+	public int getStartY() {
+		return this.starty;
+	}
+	public int getEndX() {
+		return this.endx;
+	}
+	public int getEndY() {
+		return this.endy;
+	}
+	
 	public ArrayList<MOVE> getPath() {
 		boolean[][] visited = createVisited(walls);
 		PriorityQueue<AStarNode> pq = createAStarPQ();
@@ -53,7 +69,8 @@ public class AStar {
 		return null;
 	}
 	
-	public static void printPath(boolean[][] walls, ArrayList<MOVE> path, int startx, int starty) {
+	public static ArrayList<int[]> printPath(boolean[][] walls, ArrayList<MOVE> path, int startx, int starty) {
+		ArrayList<int[]> visitedPoints = new ArrayList<>();
 		int x = startx;
 		int y = starty;
 		boolean[][] trail = createTrail(walls);
@@ -71,6 +88,8 @@ public class AStar {
 			if(path.get(i) == MOVE.LEFT) {
 				System.out.println("LEFT"); x--;
 			}
+			int [] points = {x, y};
+			visitedPoints.add(points);
 			System.out.println(x + " " + y);
 			trail[y][x] = true;
 		}
@@ -83,6 +102,8 @@ public class AStar {
 			}
 			System.out.println();
 		}
+
+		return visitedPoints;
 	}
 	
 	private static PriorityQueue<AStarNode> createAStarPQ() {
