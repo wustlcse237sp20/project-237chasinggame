@@ -32,19 +32,22 @@ public class AStar {
 		pq.add(start);
 		while(!pq.isEmpty()) {
 			AStarNode current = pq.poll();
-			visited[current.getX()][current.getY()] = true;
+			if(visited[current.getY()][current.getX()]) {
+				continue;
+			}
+			visited[current.getY()][current.getX()] = true;
 			
 			if(current.getX() == endx && current.getY() == endy) {
 				return current.getMoves();
 			}
 			
-			if(!visited[current.getX() + 1][current.getY()])
+			if(current.getX() + 1 < visited[0].length && !visited[current.getY()][current.getX() + 1])
 				pq.add(new AStarNode(current.getX() + 1, current.getY(), current));
-			if(!visited[current.getX() - 1][current.getY()])
+			if(current.getX() - 1 > -1 &&!visited[current.getY()][current.getX() - 1])
 				pq.add(new AStarNode(current.getX() - 1, current.getY(), current));
-			if(!visited[current.getX()][current.getY() + 1])
+			if(current.getY() + 1 < visited.length && !visited[current.getY() + 1][current.getX()])
 				pq.add(new AStarNode(current.getX(), current.getY() + 1, current));
-			if(!visited[current.getX()][current.getY() - 1])
+			if(current.getY() - 1 > -1 && !visited[current.getY() - 1][current.getX()])
 				pq.add(new AStarNode(current.getX(), current.getY() - 1, current));
 		}
 		return null;
