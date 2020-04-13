@@ -2,6 +2,7 @@ package code;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import code.AStar.AStar;
 import doodlepad.*;
 
 public class Maze extends Pad{
@@ -235,8 +236,10 @@ public class Maze extends Pad{
     public Rectangle getPlayer() {
     	return this.r;
     }
-// Uncomment main to test
-//    public static void main(String[] args) {
-//    	Maze m = new Maze();
-//    }
+	public static void main(String[] args) {
+		Maze m = new Maze();
+		int startx = 1, starty = 1;
+		AStar as = new AStar(m.getWalls(), startx, starty, 491, 491);
+		AStar.printPath(m.getWalls(), as.getPath(), startx, starty);
+	}
 }

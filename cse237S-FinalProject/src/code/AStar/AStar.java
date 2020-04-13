@@ -5,14 +5,8 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 import code.AStar.AStarNode.MOVE;
-
+//The algorithm only works for our maze class, meaning walls may begin only at multiples of 10 and are 10 long.
 public class AStar {
-	public static void main(String[] args) {
-		boolean[][] walls = createWalls();
-		int startx = 4, starty = 4;
-		AStar as = new AStar(walls, startx, starty, 8, 8);
-		printPath(walls, as.getPath(), startx, starty);
-	}
 	
 	boolean[][] walls;
 	int startx, starty, endx, endy;
@@ -57,14 +51,14 @@ public class AStar {
 				return current.getMoves();
 			}
 			
-			if(current.getX() + 1 < visited[0].length && !visited[current.getY()][current.getX() + 1])
-				pq.add(new AStarNode(current.getX() + 1, current.getY(), current));
-			if(current.getX() - 1 > -1 &&!visited[current.getY()][current.getX() - 1])
-				pq.add(new AStarNode(current.getX() - 1, current.getY(), current));
-			if(current.getY() + 1 < visited.length && !visited[current.getY() + 1][current.getX()])
-				pq.add(new AStarNode(current.getX(), current.getY() + 1, current));
-			if(current.getY() - 1 > -1 && !visited[current.getY() - 1][current.getX()])
-				pq.add(new AStarNode(current.getX(), current.getY() - 1, current));
+			if(current.getX() + 10 < visited[0].length && !visited[current.getY()][current.getX() + 10] && !visited[current.getY()][current.getX() + 9] )
+				pq.add(new AStarNode(current.getX() + 10, current.getY(), current));
+			if(current.getX() - 10 > -1 &&!visited[current.getY()][current.getX() - 10] && !visited[current.getY()][current.getX() - 1])
+				pq.add(new AStarNode(current.getX() - 10, current.getY(), current));
+			if(current.getY() + 10 < visited.length && !visited[current.getY() + 10][current.getX()] && !visited[current.getY() + 9][current.getX()] )
+				pq.add(new AStarNode(current.getX(), current.getY() + 10, current));
+			if(current.getY() - 10 > -1 && !visited[current.getY() - 10][current.getX()] && !visited[current.getY() - 1][current.getX()])
+				pq.add(new AStarNode(current.getX(), current.getY() - 10, current));
 		}
 		return null;
 	}
@@ -77,16 +71,16 @@ public class AStar {
 		trail[y][x] = true;
 		for(int i = 0; i < path.size(); i++) {
 			if(path.get(i) == MOVE.DOWN) {
-				System.out.println("DOWN"); y++;
+				System.out.println("DOWN"); y+=10;
 			}
 			if(path.get(i) == MOVE.UP) {
-				System.out.println("UP"); y--;
+				System.out.println("UP"); y-=10;
 			}
 			if(path.get(i) == MOVE.RIGHT) {
-				System.out.println("RIGHT"); x++;
+				System.out.println("RIGHT"); x+=10;
 			}
 			if(path.get(i) == MOVE.LEFT) {
-				System.out.println("LEFT"); x--;
+				System.out.println("LEFT"); x-=10;
 			}
 			int [] points = {x, y};
 			visitedPoints.add(points);
@@ -137,26 +131,4 @@ public class AStar {
 		return trail;
 	}
 	
-	public static boolean[][] createWalls() {
-		boolean[][] walls = new boolean[10][10];
-		for(int i = 0; i < walls.length; i++) {
-			for(int j = 0; j < walls[0].length; j++) {
-				walls[i][j] = false;
-			}
-		}
-		for(int i = 0; i < walls.length; i++) {
-			for(int j = 0; j < walls[0].length; j++) {
-				if(i == 0 || i == walls.length - 1) walls[i][j] = true;
-				if(j == 0 || j == walls[0].length - 1) walls[i][j] = true;
-			}
-		}
-		
-		walls[5][5] = true;
-		walls[5][4] = true;
-		walls[5][3] = true;
-		walls[4][5] = true;
-		walls[3][5] = true;
-		
-		return walls;
-	}
 }
