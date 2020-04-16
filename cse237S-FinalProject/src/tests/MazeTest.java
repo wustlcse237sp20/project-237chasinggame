@@ -56,10 +56,10 @@ class MazeTest extends Maze {
 	void testWallBarrier() {
 		boolean[][] walls = this.getWalls();
 		Rectangle r = this.getPlayer();
-		while (!walls[1][(int)r.getX()+9]) {
-			assertTrue(this.movePlayerRight());
+		while (!walls[(int)r.getY()][(int)r.getX()+9]) {
+			assertTrue(this.moveRight(r));
 		}
-		assertTrue(false == this.movePlayerRight());
+		assertTrue(false == this.moveRight(r));
 	}
 	
 	@Test
@@ -69,11 +69,11 @@ class MazeTest extends Maze {
 		int oldX = (int)r.getX();
 		int oldY = (int)r.getY();
 		if(!walls[1][(int)r.getX()+9]) {
-			this.movePlayerRight();
+			this.moveRight(r);
 			assert((oldX + 10) == (int)r.getX() && oldY == (int)r.getY());
 		}
 		else {
-			this.movePlayerDown();
+			this.moveDown(r);
 			assert(oldX == (int)r.getX() && (oldY + 10) == (int)r.getY());
 		}
 		
@@ -87,6 +87,13 @@ class MazeTest extends Maze {
 		boolean solutionFound = dfs(this.getWalls(), 1, 1);
 		Assert.assertTrue(solutionFound);
 //		fail("Not yet implemented");
+	}
+	@Test
+	void testMoveComputerSolvesMaze() {
+		while(this.moveComputer()) {
+		}
+		Rectangle computer = this.getComputer();
+		assert((int)computer.getX() == this.getMazeWidth() - 9 && (int)computer.getY() == this.getMazeHeight() - 9);
 	}
 	boolean dfs(boolean[][] w, int r, int c) {
 		boolean [][] visited = new boolean[w.length][w.length];
@@ -112,5 +119,6 @@ class MazeTest extends Maze {
     	visited[r][c] = false;
     	return false;
 	}
+	
 
 }

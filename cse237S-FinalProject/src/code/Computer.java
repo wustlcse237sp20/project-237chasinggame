@@ -2,12 +2,12 @@ package code;
 
 import doodlepad.Rectangle;
 
-public class Player {
+public class Computer {
 	private Rectangle r;
-	public Player() {
-		r = new Rectangle(121,121,9,9);
+	public Computer() {
+		r = new Rectangle(1,1,9,9);
 		r.setStrokeWidth(0);
-		r.setFillColor(255, 0, 0);
+		r.setFillColor(0, 0, 255);
 	}
 	
 	public Rectangle getRectangle() {
