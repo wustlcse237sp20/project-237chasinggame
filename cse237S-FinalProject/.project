@@ -14,4 +14,16 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>README.md</name>
+			<type>1</type>
+			<location>/Users/robert/git/project-237chasinggame4/README.md</location>
+		</link>
+		<link>
+			<name>RunGame.jar</name>
+			<type>1</type>
+			<location>/Users/robert/git/project-237chasinggame4/RunGame.jar</location>
+		</link>
+	</linkedResources>
 </projectDescription>

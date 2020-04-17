@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import code.AStar.AStar;
+import code.AStar.AStarNode.MOVE;
 import doodlepad.*;
 
 public class Maze extends Pad{
@@ -11,18 +12,31 @@ public class Maze extends Pad{
 	enum Orientation{
 		up, right, down, left
 	}
-	Orientation orientation = Orientation.right;
-	Rectangle r;
+	
+	Orientation player1Orientation = Orientation.right;
+	Rectangle player1;
+	//computer also known as player 2
+	Rectangle computer;
+	ArrayList<MOVE> computerSolutionPath;
+	int computerPositionInSolution;
 	boolean[][] walls = new boolean[height + 1][width + 1];
 	boolean[][] visitedBFS = new boolean[height + 1][width + 1];
     public Maze(){
     	super(750, 750);
     	drawMaze(true);
+		AStar computerSolution = new AStar(walls, (int)computer.getX(), (int)computer.getY(), 491, 491);
+		computerSolutionPath = computerSolution.getPath();
+		computerPositionInSolution = 0;
     }
     // bool drawMaze indicates whether you should draw maze for the human on the GUI, which would slow down tests by a lot
     public Maze(boolean drawMaze) {
     	super(750, 750);
     	drawMaze(drawMaze);
+		AStar computerSolution = new AStar(walls, (int)computer.getX(), (int)computer.getY(), 491, 491);
+		computerSolutionPath = computerSolution.getPath();
+		computerPositionInSolution = 0;
+    	//uncomment below for player1 to solve following right wall
+//    	rightWallBot();
     }
     public void drawMaze(boolean drawMaze) {
     	// put in all walls
@@ -32,10 +46,10 @@ public class Maze extends Pad{
     	removeEndWall();
     	removeWallsToMakeValid(5,5);
     	if (drawMaze) {drawWalls();}
-    	setupCharacter();
-    	r.toFront();
-    	//uncomment below for bot to solve following right wall
-//    	rightWallBot();
+    	setupComputer();
+    	computer.toFront();
+    	setupPlayer();
+    	player1.toFront();
     	}
     //walls are length 10 and begin at (10n,10n)
 	public void putInAllWalls() {
@@ -109,116 +123,109 @@ public class Maze extends Pad{
     	
     	
     }
-    public void setupCharacter() {
-    	r = (new Player()).getRectangle();
+    public void setupPlayer() {
+    	player1 = (new Player()).getRectangle();
+    }
+    public void setupComputer() {
+    	computer = (new Computer()).getRectangle();
     }
     public void onKeyPressed(String keyText, String keyModifiers) {
-    	if(r.getX() >= width && r.getY() >= height - 10) {
+    	moveComputer();
+    	if(player1.getX() >= width && player1.getY() >= height - 10) {
     		return;
     	}
     	if(keyText.equals("D")) {
-    		movePlayerRight();
+    		moveRight(player1);
     	}
     	else if(keyText.equals("A")){
-    		movePlayerLeft();
+    		moveLeft(player1);
     	}
     	else if(keyText.equals("W")) {
-    		movePlayerUp();
+    		moveUp(player1);
     	}
     	else if(keyText.equals("S")) {
-    		movePlayerDown();
+    		moveDown(player1);
     	}
     }
-    public boolean movePlayerRight() {
-    	if(!walls[(int)r.getY()][(int)r.getX() + 9]) {
-    		Rectangle slime = new Rectangle(r.getX(),r.getY(), 9, 9);
-    		slime.setFillColor(0, 255, 0);
-    		slime.setStrokeWidth(0);
-    		slime.toBack();
-    		double beginX = r.getX();
-    		orientation = Orientation.right;
+    public boolean moveRight(Rectangle player) {
+    	if(!walls[(int)player.getY()][(int)player.getX() + 9]) {
+    		double beginX = player.getX();
+    		if(player.equals(player1))
+    			player1Orientation = Orientation.right;
     		for(double x = beginX + 1; x < beginX + 11; x++)
-    			r.setX(x);
+    			player.setX(x);
     		return true;
     	}
     	return false;
     }
-    public boolean movePlayerLeft() {
-    	if(r.getX() - 10 > 0 && !walls[(int)r.getY()][(int)r.getX() - 1]) {
-    		Rectangle slime = new Rectangle(r.getX(),r.getY(), 9, 9);
-    		slime.setFillColor(0, 255, 0);
-    		slime.setStrokeWidth(0);
-    		slime.toBack();
-    		double beginX = r.getX();
-    		orientation = Orientation.left;
+    public boolean moveLeft(Rectangle player) {
+    	if(player.getX() - 10 > 0 && !walls[(int)player.getY()][(int)player.getX() - 1]) {
+    		double beginX = player.getX();
+    		if(player.equals(player1))
+    			player1Orientation = Orientation.left;
     		for(double x = beginX - 1; x > beginX  - 11; x--)
-    			r.setX(x);
+    			player.setX(x);
     		return true;
     	}
 		return false;    
     }
-    public boolean movePlayerDown() {
-    	if(!walls[(int)r.getY()+9][(int)r.getX()]) {
-    		Rectangle slime = new Rectangle(r.getX(),r.getY(), 9, 9);
-    		slime.setFillColor(0, 255, 0);
-    		slime.setStrokeWidth(0);
-    		slime.toBack();
-    		double beginY = r.getY();
-    		orientation = Orientation.down;
+    public boolean moveDown(Rectangle player) {
+    	if(!walls[(int)player.getY()+9][(int)player.getX()]) {
+    		double beginY = player.getY();
+    		if(player.equals(player1))
+    			player1Orientation = Orientation.down;
     		for(double y = beginY + 1; y < beginY + 11; y++)
-    			r.setY(y);
+    			player.setY(y);
     		return true;
     	}
+
     	return false;
     }
-    public boolean movePlayerUp() {
-    	if(r.getY() - 10 > 0 && !walls[(int)r.getY() -1][(int)r.getX()]) {
-    		Rectangle slime = new Rectangle(r.getX(),r.getY(), 9, 9);
-    		slime.setFillColor(0, 255, 0);
-    		slime.setStrokeWidth(0);
-    		slime.toBack();
-    		double beginY = r.getY();
-    		orientation = Orientation.up;
+    public boolean moveUp(Rectangle player) {
+    	if(player.getY() - 10 > 0 && !walls[(int)player.getY() -1][(int)player.getX()]) {
+    		double beginY = player.getY();
+    		if(player.equals(player1))
+    			player1Orientation = Orientation.up;
     		for(double y = beginY - 1; y > beginY - 11; y--)
-    			r.setY(y);
+    			player.setY(y);
     		return true;
     	}
     	return false;
     }
     public void rightWallBot() {
-    	while(r.getX() != width - 9 || r.getY() != height - 9)
-	    	if(orientation == Orientation.right) {
-	    		if(!movePlayerDown()) {
-	    			if(!movePlayerRight()) {
-	    				if(!movePlayerUp()) {
-	    					movePlayerLeft();
+    	while(player1.getX() != width - 9 || player1.getY() != height - 9)
+	    	if(player1Orientation == Orientation.right) {
+	    		if(!moveDown(player1)) {
+	    			if(!moveRight(player1)) {
+	    				if(!moveUp(player1)) {
+	    					moveLeft(player1);
 	    				}
 	    			}
 	    		}
 	    	}
-	    	else if(orientation == Orientation.up) {
-	    		if(!movePlayerRight()) {
-	    			if(!movePlayerUp()) {
-	    				if(!movePlayerLeft()) {
-	    					movePlayerDown();
+	    	else if(player1Orientation == Orientation.up) {
+	    		if(!moveRight(player1)) {
+	    			if(!moveUp(player1)) {
+	    				if(!moveLeft(player1)) {
+	    					moveDown(player1);
 	    				}
 	    			}
 	    		}
 	    	}
-	    	else if(orientation == Orientation.left) {
-	    		if(!movePlayerUp()) {
-	    			if(!movePlayerLeft()) {
-	    				if(!movePlayerDown()) {
-	    					movePlayerRight();
+	    	else if(player1Orientation == Orientation.left) {
+	    		if(!moveUp(player1)) {
+	    			if(!moveLeft(player1)) {
+	    				if(!moveDown(player1)) {
+	    					moveRight(player1);
 	    				}
 	    			}
 	    		}
 	    	}
-	    	else if(orientation == Orientation.down) {
-	    		if(!movePlayerLeft()) {
-	    			if(!movePlayerDown()) {
-	    				if(!movePlayerRight()) {
-	    					movePlayerUp();
+	    	else if(player1Orientation == Orientation.down) {
+	    		if(!moveLeft(player1)) {
+	    			if(!moveDown(player1)) {
+	    				if(!moveRight(player1)) {
+	    					moveUp(player1);
 	    				}
 	    			}
 	    		}
@@ -234,12 +241,28 @@ public class Maze extends Pad{
     	return this.walls;
     }
     public Rectangle getPlayer() {
-    	return this.r;
+    	return this.player1;
     }
-	public static void main(String[] args) {
-		Maze m = new Maze();
-		int startx = 1, starty = 1;
-		AStar as = new AStar(m.getWalls(), startx, starty, 491, 491);
-		AStar.printPath(m.getWalls(), as.getPath(), startx, starty);
-	}
+    public Rectangle getComputer() {
+    	return this.computer;
+    }
+    public boolean moveComputer() {
+    	if(computerPositionInSolution < computerSolutionPath.size()) {
+    		if(computerSolutionPath.get(computerPositionInSolution) == MOVE.DOWN) {
+				moveDown(computer);
+			}
+    		else if(computerSolutionPath.get(computerPositionInSolution) == MOVE.UP) {
+				moveUp(computer);
+			}
+    		else if(computerSolutionPath.get(computerPositionInSolution) == MOVE.RIGHT) {
+				moveRight(computer);
+			}
+    		else if(computerSolutionPath.get(computerPositionInSolution) == MOVE.LEFT) {
+				moveLeft(computer);
+			}
+    		computerPositionInSolution++;
+    		return true;
+    	}
+    	return false;
+    }
 }

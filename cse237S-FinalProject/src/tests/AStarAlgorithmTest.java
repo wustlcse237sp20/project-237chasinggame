@@ -50,7 +50,7 @@ class AStarAlgorithmTest {
 		Maze m = new Maze(false);
 		boolean[][] walls = m.getWalls();
 		int width = walls.length, height = walls[0].length;
-		int startx = 4, starty = 4;
+		int startx = 1, starty = 1;
 		
 		for(int i=1; i<width-1; i++) {
 			for(int j =1; j<height-1; j++) {
