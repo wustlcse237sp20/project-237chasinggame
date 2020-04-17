@@ -6,11 +6,22 @@ import java.util.PriorityQueue;
 
 import code.AStar.AStarNode.MOVE;
 //The algorithm only works for our maze class, meaning walls may begin only at multiples of 10 and are 10 long.
+
+/**
+ * Class for calculating the AStar optimal path between two points on the maze
+ */
 public class AStar {
-	
 	boolean[][] walls;
 	int startx, starty, endx, endy;
 	
+	/**
+	 * Constructor for AStar algorithm
+	 * @param walls a boolean[][] representing where the walls are in the maze
+	 * @param startx the starting x coordinate
+	 * @param starty the starting y coordinate
+	 * @param endx the ending x coordinate
+	 * @param endy the ending y coordinate
+	 */
 	public AStar(boolean[][] walls, int startx, int starty, int endx, int endy) {
 		this.walls = walls;
 		this.startx = startx;
@@ -19,22 +30,45 @@ public class AStar {
 		this.endy = endy;
 	}
 	
+	/**
+	 * @return boolean[][] walls of the maze
+	 */
 	public boolean[][] getWalls(){
 		return this.walls;
 	}
+	
+	/**
+	 * @return starting x coordinate
+	 */
 	public int getStartX() {
 		return this.startx;
 	}
+	
+	/**
+	 * @return starting y coordinate
+	 */
 	public int getStartY() {
 		return this.starty;
 	}
+	
+	/**
+	 * @return ending x coordinate
+	 */
 	public int getEndX() {
 		return this.endx;
 	}
+	
+	/**
+	 * @return ending y coordinate
+	 */
 	public int getEndY() {
 		return this.endy;
 	}
 	
+	/**
+	 * Gets the optimal path between the two points specified.
+	 * @return an ArrayList that contains MOVE enums which specify how to get from start to end
+	 */
 	public ArrayList<MOVE> getPath() {
 		boolean[][] visited = createVisited(walls);
 		PriorityQueue<AStarNode> pq = createAStarPQ();
@@ -63,6 +97,14 @@ public class AStar {
 		return null;
 	}
 	
+	/**
+	 * Prints out the path found using AStar
+	 * @param walls boolean[][] which represents the maze
+	 * @param path an ArrayList of MOVE enums which represent optimal path
+	 * @param startx starting x coordinate
+	 * @param starty starting y coordinate
+	 * @return points visited
+	 */
 	public static ArrayList<int[]> printPath(boolean[][] walls, ArrayList<MOVE> path, int startx, int starty) {
 		ArrayList<int[]> visitedPoints = new ArrayList<>();
 		int x = startx;
@@ -100,6 +142,10 @@ public class AStar {
 		return visitedPoints;
 	}
 	
+	/**
+	 * Creates the PriorityQueue of AStar Nodes necessary for AStar
+	 * @return PriorityQueue necessary for AStar
+	 */
 	private static PriorityQueue<AStarNode> createAStarPQ() {
 		Comparator<AStarNode> nodeComparator = new Comparator<AStarNode>() {
 			@Override
@@ -111,6 +157,11 @@ public class AStar {
 		return pq;
 	}
 	
+	/**
+	 * Creates the boolean[][] of visited nodes based on the walls of the maze
+	 * @param walls boolean[][] of the maze
+	 * @return boolean[][] of visited nodes
+	 */
 	public static boolean[][] createVisited(boolean[][] walls) {
 		boolean[][] visited = new boolean[walls.length][walls[0].length];
 		for(int i = 0; i < walls.length; i++) {
@@ -121,6 +172,11 @@ public class AStar {
 		return visited;
 	}
 	
+	/**
+	 * Creates the boolean[][] of trailing nodes based on the walls of the maze
+	 * @param walls boolean[][] of the maze
+	 * @return boolean[][] of trailing nodes
+	 */
 	public static boolean[][] createTrail(boolean[][] walls) {
 		boolean[][] trail = new boolean[walls.length][walls[0].length];
 		for(int i = 0; i < walls.length; i++) {

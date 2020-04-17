@@ -21,14 +21,22 @@ public class Maze extends Pad{
 	int computerPositionInSolution;
 	boolean[][] walls = new boolean[height + 1][width + 1];
 	boolean[][] visitedBFS = new boolean[height + 1][width + 1];
-    public Maze(){
+    
+	/**
+	 * Constructor for a Maze
+	 */
+	public Maze(){
     	super(750, 750);
     	drawMaze(true);
 		AStar computerSolution = new AStar(walls, (int)computer.getX(), (int)computer.getY(), 491, 491);
 		computerSolutionPath = computerSolution.getPath();
 		computerPositionInSolution = 0;
     }
-    // bool drawMaze indicates whether you should draw maze for the human on the GUI, which would slow down tests by a lot
+	
+	/**
+	 * Constructor for a Maze
+	 * @param drawMaze indicates whether you should draw maze for the human on the GUI, which would slow down tests by a lot
+	 */
     public Maze(boolean drawMaze) {
     	super(750, 750);
     	drawMaze(drawMaze);
@@ -38,6 +46,11 @@ public class Maze extends Pad{
     	//uncomment below for player1 to solve following right wall
 //    	rightWallBot();
     }
+    
+    /**
+	 * Draw the maze
+	 * @param drawMaze indicates whether you should draw maze for the human on the GUI, which would slow down tests by a lot
+	 */
     public void drawMaze(boolean drawMaze) {
     	// put in all walls
     	putInAllWalls();
@@ -51,7 +64,10 @@ public class Maze extends Pad{
     	setupPlayer();
     	player1.toFront();
     	}
-    //walls are length 10 and begin at (10n,10n)
+    
+    /**
+	 * Puts walls in the maze, adds to walls boolean[][]
+	 */
 	public void putInAllWalls() {
     	for(int r=0; r<=height; r+= 10) {
     		for(int c = 0; c <= width; c++) {
@@ -64,16 +80,30 @@ public class Maze extends Pad{
     			}
     	}
     }
+	
+	/**
+	 * Removes wall at the beginning
+	 */
 	public void removeStartWall() {
 		for(int r = 0; r < 10; r++) {
 			walls[r][0] = false;
 		}
 	}
+	
+	/**
+	 * Removes wall at the end
+	 */
 	public void removeEndWall() {
 		for(int c = 0; c < 10; c++) {
 			walls[height - c][width] = false;
 		}
 	}
+	
+	/**
+	 * Removes wall at specified row and column to make it a valid maze
+	 * @param r row
+	 * @param c column
+	 */
     private void removeWallsToMakeValid(int r, int c) {
     	visitedBFS[r][c] = true;
     	ArrayList<int[]> unv = new ArrayList<int[]>();
@@ -107,6 +137,10 @@ public class Maze extends Pad{
     		}
     	}
 	}
+    
+    /**
+	 * Draws walls on the maze
+	 */
     private void drawWalls() {
     	//from array
     	for(int r = 0; r <= height; r++) {
@@ -123,12 +157,24 @@ public class Maze extends Pad{
     	
     	
     }
+    
+    /**
+	 * Sets up player rectangle
+	 */
     public void setupPlayer() {
     	player1 = (new Player()).getRectangle();
     }
+    
+    /**
+	 * Sets up computer rectangle
+	 */
     public void setupComputer() {
     	computer = (new Computer()).getRectangle();
     }
+    
+    /**
+	 * Reads input from keyboard
+	 */
     public void onKeyPressed(String keyText, String keyModifiers) {
     	moveComputer();
     	if(player1.getX() >= width && player1.getY() >= height - 10) {
@@ -147,6 +193,12 @@ public class Maze extends Pad{
     		moveDown(player1);
     	}
     }
+    
+    /**
+	 * Moves the specified player right
+	 * @param player player to be moved
+	 * @return boolean of whether this is a valid action for the player
+	 */
     public boolean moveRight(Rectangle player) {
     	if(!walls[(int)player.getY()][(int)player.getX() + 9]) {
     		double beginX = player.getX();
@@ -158,6 +210,12 @@ public class Maze extends Pad{
     	}
     	return false;
     }
+    
+    /**
+	 * Moves the specified player left
+	 * @param player player to be moved
+	 * @return boolean of whether this is a valid action for the player
+	 */
     public boolean moveLeft(Rectangle player) {
     	if(player.getX() - 10 > 0 && !walls[(int)player.getY()][(int)player.getX() - 1]) {
     		double beginX = player.getX();
@@ -169,6 +227,12 @@ public class Maze extends Pad{
     	}
 		return false;    
     }
+    
+    /**
+	 * Moves the specified player down
+	 * @param player player to be moved
+	 * @return boolean of whether this is a valid action for the player
+	 */
     public boolean moveDown(Rectangle player) {
     	if(!walls[(int)player.getY()+9][(int)player.getX()]) {
     		double beginY = player.getY();
@@ -181,6 +245,12 @@ public class Maze extends Pad{
 
     	return false;
     }
+    
+    /**
+	 * Moves the specified player up
+	 * @param player player to be moved
+	 * @return boolean of whether this is a valid action for the player
+	 */
     public boolean moveUp(Rectangle player) {
     	if(player.getY() - 10 > 0 && !walls[(int)player.getY() -1][(int)player.getX()]) {
     		double beginY = player.getY();
@@ -192,6 +262,10 @@ public class Maze extends Pad{
     	}
     	return false;
     }
+    
+    /**
+	 * Bot for a strategy to follow the right wall
+	 */
     public void rightWallBot() {
     	while(player1.getX() != width - 9 || player1.getY() != height - 9)
 	    	if(player1Orientation == Orientation.right) {
@@ -231,22 +305,55 @@ public class Maze extends Pad{
 	    		}
 	    	}
     }
+    
+    /**
+	 * Returns maze height
+	 * @return maze height
+	 */
     public int getMazeHeight() {
     	return this.height;
     }
+    
+    /**
+	 * Returns maze width
+	 * @return maze width
+	 */
     public int getMazeWidth() {
     	return this.width;
     }
+    
+    /**
+	 * Returns maze walls
+	 * @return maze walls boolean[][]
+	 */
     public boolean[][] getWalls() {
     	return this.walls;
     }
+    
+    /**
+	 * Returns main player rectangle
+	 * @return player rectangle
+	 */
     public Rectangle getPlayer() {
     	return this.player1;
     }
+    
+    /**
+	 * Returns computer player rectangle
+	 * @return computer rectangle
+	 */
     public Rectangle getComputer() {
     	return this.computer;
     }
+    
+    /**
+	 * Runs the computer through the optimal path
+	 * @return if the computer has reached the solution
+	 */
     public boolean moveComputer() {
+    	AStar computerSolution = new AStar(walls, (int)computer.getX(), (int)computer.getY(), (int)player1.getX(), (int)player1.getY());
+		computerSolutionPath = computerSolution.getPath();
+		
     	if(computerPositionInSolution < computerSolutionPath.size()) {
     		if(computerSolutionPath.get(computerPositionInSolution) == MOVE.DOWN) {
 				moveDown(computer);
@@ -260,7 +367,7 @@ public class Maze extends Pad{
     		else if(computerSolutionPath.get(computerPositionInSolution) == MOVE.LEFT) {
 				moveLeft(computer);
 			}
-    		computerPositionInSolution++;
+//    		computerPositionInSolution++;
     		return true;
     	}
     	return false;
