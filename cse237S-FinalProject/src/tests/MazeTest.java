@@ -16,7 +16,7 @@ class MazeTest extends Maze {
 	
 	//removes the need to have BeforeEach code segment to construct new maze objects, as this does it for us
 	public MazeTest() {
-		super(false);
+		super(250, 250, false);
 	}
 
 	@Test
@@ -70,18 +70,25 @@ class MazeTest extends Maze {
 		Rectangle r = this.getPlayer();
 		int oldX = (int)r.getX();
 		int oldY = (int)r.getY();
-		if(!walls[1][(int)r.getX()+9]) {
+		if(!walls[(int)r.getY()][(int)r.getX()+9]) {
 			this.moveRight(r);
 			assert((oldX + 10) == (int)r.getX() && oldY == (int)r.getY());
 		}
-		else {
+		else if (!walls[(int)r.getY()][(int)r.getX()-9]) {
+			this.moveLeft(r);
+			assert((oldX-10) == (int)r.getX() && oldY == (int)r.getY());
+		}
+		else if (!walls[(int)r.getY()+9][(int)r.getX()]) {
 			this.moveDown(r);
-			assert(oldX == (int)r.getX() && (oldY + 10) == (int)r.getY());
+			assert(oldX == (int)r.getX() && (oldY+10) == (int)r.getY());
+		}
+		else {
+			this.moveUp(r);
+			assert(oldX == (int)r.getX() && (oldY-10) == (int)r.getY());
 		}
 		
 	}
 	
-	//
 	
 	@Test
 	void testRemoveWallsToMakeValid() {

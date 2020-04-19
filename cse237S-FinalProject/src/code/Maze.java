@@ -7,8 +7,8 @@ import code.AStar.AStarNode.MOVE;
 import doodlepad.*;
 
 public class Maze extends Pad{
-	int width = 500;
-	int height = 500;
+	int width;
+	int height;
 	enum Orientation{
 		up, right, down, left
 	}
@@ -23,14 +23,18 @@ public class Maze extends Pad{
 	
 	int computerPositionInSolution = 0;
 	
-	boolean[][] walls = new boolean[height + 1][width + 1];
-	boolean[][] visitedBFS = new boolean[height + 1][width + 1];
+	boolean[][] walls;  
+	boolean[][] visitedBFS; 
     
 	/**
 	 * Constructor for a Maze
 	 */
-	public Maze(){
-    	super(750, 750);
+	public Maze(int width, int height){
+		super(width+250, height+250);
+		this.width = width;
+		this.height = height;
+		visitedBFS = new boolean[height + 1][width + 1];
+		walls = new boolean[height + 1][width + 1];
     	drawMaze(true);
     	this.initializeComputerSolutions(4);
     }
@@ -39,8 +43,12 @@ public class Maze extends Pad{
 	 * Constructor for a Maze
 	 * @param drawMaze indicates whether you should draw maze for the human on the GUI, which would slow down tests by a lot
 	 */
-    public Maze(boolean drawMaze) {
-    	super(750, 750);
+    public Maze(int width, int height, boolean drawMaze) {
+    	super(width+250, height+250);
+    	this.width = width;
+		this.height = height;
+		visitedBFS = new boolean[height + 1][width + 1];
+		walls = new boolean[height + 1][width + 1];
     	drawMaze(drawMaze);
     	
     	this.initializeComputerSolutions(4);
