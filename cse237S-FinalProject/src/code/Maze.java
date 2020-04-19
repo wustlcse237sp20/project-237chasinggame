@@ -164,7 +164,7 @@ public class Maze extends Pad{
 	 * Sets up player rectangle
 	 */
     public void setupPlayer() {
-    	player1 = (new Player()).getRectangle();
+    	player1 = (new Player(0,0,255,121,121)).getRectangle();
     }
     
     /**
