@@ -30,7 +30,7 @@ public class Maze extends Pad{
 	 * Constructor for a Maze
 	 */
 	public Maze(int width, int height){
-		super(width+250, height+250);
+		super(width, height);
 		this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
@@ -44,7 +44,7 @@ public class Maze extends Pad{
 	 * @param drawMaze indicates whether you should draw maze for the human on the GUI, which would slow down tests by a lot
 	 */
     public Maze(int width, int height, boolean drawMaze) {
-    	super(width+250, height+250);
+    	super(width, height);
     	this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
