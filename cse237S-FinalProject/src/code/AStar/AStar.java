@@ -71,11 +71,11 @@ public class AStar {
 	 */
 	public ArrayList<MOVE> getPath() {
 		boolean[][] visited = createVisited(walls);
-		PriorityQueue<AStarNode> pq = createAStarPQ();
+		PriorityQueue<AStarNode> priorityQueue = createAStarPQ();
 		AStarNode start = new AStarNode(startx, starty, endx, endy, new ArrayList<MOVE>());
-		pq.add(start);
-		while(!pq.isEmpty()) {
-			AStarNode current = pq.poll();
+		priorityQueue.add(start);
+		while(!priorityQueue.isEmpty()) {
+			AStarNode current = priorityQueue.poll();
 			if(visited[current.getY()][current.getX()]) {
 				continue;
 			}
@@ -86,13 +86,13 @@ public class AStar {
 			}
 			
 			if(current.getX() + 10 < visited[0].length && !visited[current.getY()][current.getX() + 10] && !visited[current.getY()][current.getX() + 9] )
-				pq.add(new AStarNode(current.getX() + 10, current.getY(), current));
+				priorityQueue.add(new AStarNode(current.getX() + 10, current.getY(), current));
 			if(current.getX() - 10 > -1 &&!visited[current.getY()][current.getX() - 10] && !visited[current.getY()][current.getX() - 1])
-				pq.add(new AStarNode(current.getX() - 10, current.getY(), current));
+				priorityQueue.add(new AStarNode(current.getX() - 10, current.getY(), current));
 			if(current.getY() + 10 < visited.length && !visited[current.getY() + 10][current.getX()] && !visited[current.getY() + 9][current.getX()] )
-				pq.add(new AStarNode(current.getX(), current.getY() + 10, current));
+				priorityQueue.add(new AStarNode(current.getX(), current.getY() + 10, current));
 			if(current.getY() - 10 > -1 && !visited[current.getY() - 10][current.getX()] && !visited[current.getY() - 1][current.getX()])
-				pq.add(new AStarNode(current.getX(), current.getY() - 10, current));
+				priorityQueue.add(new AStarNode(current.getX(), current.getY() - 10, current));
 		}
 		return null;
 	}
@@ -130,10 +130,10 @@ public class AStar {
 			trail[y][x] = true;
 		}
 		
-		for(int i = 0; i < walls.length; i++) {
-			for(int j = 0; j < walls[0].length; j++) {
-				if(walls[i][j]) System.out.print("x ");
-				else if(trail[i][j]) System.out.print("o ");
+		for(int row = 0; row < walls.length; row++) {
+			for(int col = 0; col < walls[0].length; col++) {
+				if(walls[row][col]) System.out.print("x ");
+				else if(trail[row][col]) System.out.print("o ");
 				else System.out.print("  ");
 			}
 			System.out.println();
@@ -153,8 +153,8 @@ public class AStar {
 				return (int) Math.round(a1.getCost() + a1.getHeurisic() - a2.getCost() - a2.getHeurisic());
 			}
 		};
-		PriorityQueue<AStarNode> pq = new PriorityQueue<AStarNode>(nodeComparator);
-		return pq;
+		PriorityQueue<AStarNode> priorityQueue = new PriorityQueue<AStarNode>(nodeComparator);
+		return priorityQueue;
 	}
 	
 	/**
@@ -164,9 +164,9 @@ public class AStar {
 	 */
 	public static boolean[][] createVisited(boolean[][] walls) {
 		boolean[][] visited = new boolean[walls.length][walls[0].length];
-		for(int i = 0; i < walls.length; i++) {
-			for(int j = 0; j < walls[0].length; j++) {
-				visited[i][j] = walls[i][j];
+		for(int row = 0; row < walls.length; row++) {
+			for(int col = 0; col < walls[0].length; col++) {
+				visited[row][col] = walls[row][col];
 			}
 		}
 		return visited;
@@ -179,9 +179,9 @@ public class AStar {
 	 */
 	public static boolean[][] createTrail(boolean[][] walls) {
 		boolean[][] trail = new boolean[walls.length][walls[0].length];
-		for(int i = 0; i < walls.length; i++) {
-			for(int j = 0; j < walls[0].length; j++) {
-				trail[i][j] = false;
+		for(int row = 0; row < walls.length; row++) {
+			for(int col = 0; col < walls[0].length; col++) {
+				trail[row][col] = false;
 			}
 		}
 		return trail;

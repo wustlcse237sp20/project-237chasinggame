@@ -6,15 +6,15 @@ import doodlepad.Rectangle;
  * The class which represents the player of the game
  */
 public class Player {
-	private Rectangle r;
+	private Rectangle rect;
 	
 	/**
 	 * Constructor for the player object, represented by a doodlepad rectangle
 	 */
-	public Player() {
-		r = new Rectangle(121,121,9,9);
-		r.setStrokeWidth(0);
-		r.setFillColor(255, 0, 0);
+	public Player(int red, int green, int blue, int posX, int posY) {
+		rect = new Rectangle(posX,posY,9,9);
+		rect.setStrokeWidth(0);
+		rect.setFillColor(red, green, blue);
 	}
 	
 	/**
@@ -22,6 +22,6 @@ public class Player {
 	 * @return Rectangle object representing player
 	 */
 	public Rectangle getRectangle() {
-		return r;
+		return rect;
 	}
 }
