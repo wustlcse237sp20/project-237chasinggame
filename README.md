@@ -30,6 +30,8 @@ Start game by running "java -jar RunGame.jar" from terminal If that doesn't work
 * The Enemy will be on the maze and move
 * The user is now chased by the enemy as the user navigates the maze
 * The user should have the option to see the best path from one point to another --> Moved to a unit test, doesn't make sense in game
+* Multiple enemies can all track the user and their moves to get to the player
+* Multiple enemies can move towards the player
 
 ##### What user stories do you intend to complete next iteration?
 * The user should be scored on how well they navigate the maze and avoid the enemies
