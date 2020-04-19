@@ -16,9 +16,13 @@ public class Maze extends Pad{
 	Orientation player1Orientation = Orientation.right;
 	Rectangle player1;
 	//computer also known as player 2
-	Rectangle computer;
-	ArrayList<MOVE> computerSolutionPath;
-	int computerPositionInSolution;
+
+	
+	ArrayList<Rectangle> computers = new ArrayList<>(); 
+	ArrayList<ArrayList<MOVE>> computerSolutionPaths = new ArrayList<>();
+	
+	int computerPositionInSolution = 0;
+	
 	boolean[][] walls = new boolean[height + 1][width + 1];
 	boolean[][] visitedBFS = new boolean[height + 1][width + 1];
     
@@ -28,9 +32,7 @@ public class Maze extends Pad{
 	public Maze(){
     	super(750, 750);
     	drawMaze(true);
-		AStar computerSolution = new AStar(walls, (int)computer.getX(), (int)computer.getY(), 491, 491);
-		computerSolutionPath = computerSolution.getPath();
-		computerPositionInSolution = 0;
+    	this.initializeComputerSolutions(4);
     }
 	
 	/**
@@ -40,13 +42,21 @@ public class Maze extends Pad{
     public Maze(boolean drawMaze) {
     	super(750, 750);
     	drawMaze(drawMaze);
-		AStar computerSolution = new AStar(walls, (int)computer.getX(), (int)computer.getY(), 491, 491);
-		computerSolutionPath = computerSolution.getPath();
-		computerPositionInSolution = 0;
+    	
+    	this.initializeComputerSolutions(4);
+
     	//uncomment below for player1 to solve following right wall
 //    	rightWallBot();
     }
     
+    
+    private void initializeComputerSolutions(int numComputers) {
+    	for(int i=0; i< numComputers; i++) {
+    		AStar computerSolution = new AStar(walls, (int)computers.get(i).getX(), (int)computers.get(i).getY(), (int)player1.getX(), (int)player1.getY());
+    		computerSolutionPaths.add(computerSolution.getPath());
+    	}
+
+    }
     /**
 	 * Draw the maze
 	 * @param drawMaze indicates whether you should draw maze for the human on the GUI, which would slow down tests by a lot
@@ -61,8 +71,8 @@ public class Maze extends Pad{
     	if (drawMaze) {
     		drawWalls();
     	}
-    	setupComputer();
-    	computer.toFront();
+    	this.setupComputers(4);
+
     	setupPlayer();
     	player1.toFront();
     	}
@@ -168,17 +178,22 @@ public class Maze extends Pad{
     }
     
     /**
-	 * Sets up computer rectangle
+	 * Sets up computers rectangle
 	 */
-    public void setupComputer() {
-    	computer = (new Computer()).getRectangle();
+    
+    public void setupComputers(int numComputers) {
+    	for(int i =1; i<=numComputers; i++) {
+    		Rectangle c = (new Computer(i*10+1,i*10+1)).getRectangle();
+    		computers.add(c);
+    		c.toFront();
+    	}
     }
     
     /**
 	 * Reads input from keyboard
 	 */
     public void onKeyPressed(String keyText, String keyModifiers) {
-    	moveComputer();
+    	this.moveComputers();
     	if(player1.getX() >= width && player1.getY() >= height - 10) {
     		return;
     	}
@@ -194,6 +209,7 @@ public class Maze extends Pad{
     	else if(keyText.equals("S")) {
     		moveDown(player1);
     	}
+    	
     }
     
     /**
@@ -350,34 +366,44 @@ public class Maze extends Pad{
 	 * Returns computer player rectangle
 	 * @return computer rectangle
 	 */
-    public Rectangle getComputer() {
-    	return this.computer;
+    public ArrayList<Rectangle> getComputers() {
+    	return this.computers;
     }
     
     /**
 	 * Runs the computer through the optimal path
 	 * @return if the computer has reached the solution
 	 */
-    public boolean moveComputer() {
-    	AStar computerSolution = new AStar(walls, (int)computer.getX(), (int)computer.getY(), (int)player1.getX(), (int)player1.getY());
-		computerSolutionPath = computerSolution.getPath();
-		
-    	if(computerPositionInSolution < computerSolutionPath.size()) {
-    		if(computerSolutionPath.get(computerPositionInSolution) == MOVE.DOWN) {
-				moveDown(computer);
-			}
-    		else if(computerSolutionPath.get(computerPositionInSolution) == MOVE.UP) {
-				moveUp(computer);
-			}
-    		else if(computerSolutionPath.get(computerPositionInSolution) == MOVE.RIGHT) {
-				moveRight(computer);
-			}
-    		else if(computerSolutionPath.get(computerPositionInSolution) == MOVE.LEFT) {
-				moveLeft(computer);
-			}
-//    		computerPositionInSolution++;
-    		return true;
+    
+    public boolean[] moveComputers() {
+    	boolean []flags = new boolean[computers.size()];
+    	for(int i=0; i<computers.size(); i++) {
+    		Rectangle computer = computers.get(i);
+    		AStar computerSolution = new AStar(walls, (int)computer.getX(), (int)computer.getY(), (int)player1.getX(), (int)player1.getY());
+    		computerSolutionPaths.set(i, computerSolution.getPath()); 
+    		
+    		ArrayList<MOVE> computerSolutionPath = computerSolutionPaths.get(i);
+    		
+    		
+        	if(computerPositionInSolution < computerSolutionPath.size()) {
+        		MOVE compMove = computerSolutionPath.get(0); // Getting the next move
+        		if(compMove == MOVE.DOWN) {
+    				moveDown(computer);
+    			}
+        		else if(compMove == MOVE.UP) {
+    				moveUp(computer);
+    			}
+        		else if(compMove == MOVE.RIGHT) {
+    				moveRight(computer);
+    			}
+        		else if(compMove == MOVE.LEFT) {
+    				moveLeft(computer);
+    			}
+        		flags[i] = true;
+        	} else {
+        		flags[i] = false;
+        	}
     	}
-    	return false;
+    	return flags;
     }
 }

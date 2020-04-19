@@ -4,6 +4,8 @@ package tests;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
@@ -90,11 +92,21 @@ class MazeTest extends Maze {
 	}
 	@Test
 	void testMoveComputerSolvesMaze() {
-		while(this.moveComputer()) {
+		boolean flag = true;
+		while(flag) {
+			flag = false;
+			boolean [] moves = moveComputers();
+			for(int i =0; i< moves.length; i++) {
+				if(moves[i])
+					flag = true;
+			}
 		}
-		Rectangle computer = this.getComputer();
+		ArrayList<Rectangle> computers = this.getComputers();
 		Rectangle player = this.getPlayer();
-		assert((int)computer.getX() == (int)player.getX() && (int)computer.getY() == (int)player.getY());
+		for(Rectangle computer: computers) {
+			assert((int)computer.getX() == (int)player.getX() && (int)computer.getY() == (int)player.getY());
+		}
+		
 	}
 	boolean dfs(boolean[][] w, int r, int c) {
 		boolean [][] visited = new boolean[w.length][w.length];
