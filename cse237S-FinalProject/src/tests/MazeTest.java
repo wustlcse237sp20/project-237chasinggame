@@ -93,7 +93,8 @@ class MazeTest extends Maze {
 		while(this.moveComputer()) {
 		}
 		Rectangle computer = this.getComputer();
-		assert((int)computer.getX() == this.getMazeWidth() - 9 && (int)computer.getY() == this.getMazeHeight() - 9);
+		Rectangle player = this.getPlayer();
+		assert((int)computer.getX() == (int)player.getX() && (int)computer.getY() == (int)player.getY());
 	}
 	boolean dfs(boolean[][] w, int r, int c) {
 		boolean [][] visited = new boolean[w.length][w.length];
