@@ -5,23 +5,15 @@ import doodlepad.Rectangle;
 /**
  * The class which represents an enemy in the game
  */
-public class Computer {
-	private Rectangle r;
-	
+public class Computer extends Player {
+
 	/**
 	 * Constructor for the computer object, represented by a doodlepad rectangle
 	 */
 	public Computer() {
-		r = new Rectangle(1,1,9,9);
-		r.setStrokeWidth(0);
-		r.setFillColor(0, 0, 255);
+		rect = new Rectangle(1,1,9,9);
+		rect.setStrokeWidth(0);
+		rect.setFillColor(0, 0, 255);
 	}
-	
-	/**
-	 * Returns the computer object, represented by a doodlepad rectangle
-	 * @return Rectangle object representing computer
-	 */
-	public Rectangle getRectangle() {
-		return r;
-	}
+
 }

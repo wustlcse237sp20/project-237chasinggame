@@ -58,7 +58,9 @@ public class Maze extends Pad{
     	removeStartWall();
     	removeEndWall();
     	removeWallsToMakeValid(5,5);
-    	if (drawMaze) {drawWalls();}
+    	if (drawMaze) {
+    		drawWalls();
+    	}
     	setupComputer();
     	computer.toFront();
     	setupPlayer();
@@ -69,14 +71,14 @@ public class Maze extends Pad{
 	 * Puts walls in the maze, adds to walls boolean[][]
 	 */
 	public void putInAllWalls() {
-    	for(int r=0; r<=height; r+= 10) {
-    		for(int c = 0; c <= width; c++) {
-    			walls[r][c] = true;
+    	for(int row=0; row<=height; row+= 10) {
+    		for(int col = 0; col <= width; col++) {
+    			walls[row][col] = true;
     		}
     	}
-    	for(int r=0; r<=height; r++) {
-    		for(int c = 0; c<=width; c+=10) {
-    				walls[r][c] = true;
+    	for(int row=0; row<=height; row++) {
+    		for(int col = 0; col<=width; col+=10) {
+    				walls[row][col] = true;
     			}
     	}
     }
@@ -85,8 +87,8 @@ public class Maze extends Pad{
 	 * Removes wall at the beginning
 	 */
 	public void removeStartWall() {
-		for(int r = 0; r < 10; r++) {
-			walls[r][0] = false;
+		for(int row = 0; row < 10; row++) {
+			walls[row][0] = false;
 		}
 	}
 	
@@ -94,8 +96,8 @@ public class Maze extends Pad{
 	 * Removes wall at the end
 	 */
 	public void removeEndWall() {
-		for(int c = 0; c < 10; c++) {
-			walls[height - c][width] = false;
+		for(int col = 0; col < 10; col++) {
+			walls[height - col][width] = false;
 		}
 	}
 	
@@ -104,16 +106,16 @@ public class Maze extends Pad{
 	 * @param r row
 	 * @param c column
 	 */
-    private void removeWallsToMakeValid(int r, int c) {
-    	visitedBFS[r][c] = true;
+    private void removeWallsToMakeValid(int row, int col) {
+    	visitedBFS[row][col] = true;
     	ArrayList<int[]> unv = new ArrayList<int[]>();
-    	for(int d=-1; d <= 1; d+=2) {
-    		if(r + d * 10 > -1 && r + d * 10 < height && !visitedBFS[r + d * 10][c]) {
-    			int [] w = {r + d*10, c};
+    	for(int delta=-1; delta <= 1; delta+=2) {
+    		if(row + delta * 10 > -1 && row + delta * 10 < height && !visitedBFS[row + delta * 10][col]) {
+    			int [] w = {row + delta*10, col};
     			unv.add(w);
     		}
-    		if(c + d * 10 > -1 && c + d * 10 < width && !visitedBFS[r][c + d * 10]) {
-    			int [] w = {r, c + d * 10};
+    		if(col + delta * 10 > -1 && col + delta * 10 < width && !visitedBFS[row][col + delta * 10]) {
+    			int [] w = {row, col + delta * 10};
     			unv.add(w);
     		}
     	}
@@ -121,16 +123,16 @@ public class Maze extends Pad{
     		int random = (int)(Math.random()*unv.size());
     		int[] cell = unv.remove(random);
     		if(!visitedBFS[cell[0]][cell[1]]) {
-    			if(cell[0] == r) {
-    				for(int dw = -4; dw <= 4; dw++) {
-    					walls[r + dw][(cell[1] + c)/2] = false;
+    			if(cell[0] == row) {
+    				for(int deltaw = -4; deltaw <= 4; deltaw++) {
+    					walls[row + deltaw][(cell[1] + col)/2] = false;
     				}
     			}
     			else {
-    				for(int dw = -4; dw <= 4; dw++) {
-    					if(!walls[(cell[0] + r)/2][c + dw]){
+    				for(int deltaw = -4; deltaw <= 4; deltaw++) {
+    					if(!walls[(cell[0] + row)/2][col + deltaw]){
     					}
-    					walls[(cell[0] + r)/2][c + dw] = false;  
+    					walls[(cell[0] + row)/2][col + deltaw] = false;  
     				}    				
     			}
         		removeWallsToMakeValid(cell[0], cell[1]);
@@ -143,14 +145,14 @@ public class Maze extends Pad{
 	 */
     private void drawWalls() {
     	//from array
-    	for(int r = 0; r <= height; r++) {
-    		for(int c = 0; c <= width; c++) {
-    			if(walls[r][c])
-	    	    		if(r + 1<= height && walls[r + 1][c]) {
-	    	    			new Line(c, r, c, r + 1);
+    	for(int row = 0; row <= height; row++) {
+    		for(int col = 0; col <= width; col++) {
+    			if(walls[row][col])
+	    	    		if(row + 1<= height && walls[row + 1][col]) {
+	    	    			new Line(col, row, col, row + 1);
 	    	    		}
-	    	    		if(c + 1 <= width && walls[r][c + 1]) {
-	    	    			new Line(c, r, c + 1, r);
+	    	    		if(col + 1 <= width && walls[row][col + 1]) {
+	    	    			new Line(col, row, col + 1, row);
 	    	    		}    	    	
     		}
     	}
@@ -219,10 +221,12 @@ public class Maze extends Pad{
     public boolean moveLeft(Rectangle player) {
     	if(player.getX() - 10 > 0 && !walls[(int)player.getY()][(int)player.getX() - 1]) {
     		double beginX = player.getX();
-    		if(player.equals(player1))
+    		if(player.equals(player1)) {
     			player1Orientation = Orientation.left;
-    		for(double x = beginX - 1; x > beginX  - 11; x--)
+    		}
+    		for(double x = beginX - 1; x > beginX  - 11; x--) {
     			player.setX(x);
+    		}
     		return true;
     	}
 		return false;    
@@ -236,10 +240,12 @@ public class Maze extends Pad{
     public boolean moveDown(Rectangle player) {
     	if(!walls[(int)player.getY()+9][(int)player.getX()]) {
     		double beginY = player.getY();
-    		if(player.equals(player1))
+    		if(player.equals(player1)) {
     			player1Orientation = Orientation.down;
-    		for(double y = beginY + 1; y < beginY + 11; y++)
+    		}
+    		for(double y = beginY + 1; y < beginY + 11; y++) {
     			player.setY(y);
+    		}
     		return true;
     	}
 
@@ -254,10 +260,12 @@ public class Maze extends Pad{
     public boolean moveUp(Rectangle player) {
     	if(player.getY() - 10 > 0 && !walls[(int)player.getY() -1][(int)player.getX()]) {
     		double beginY = player.getY();
-    		if(player.equals(player1))
+    		if(player.equals(player1)) {
     			player1Orientation = Orientation.up;
-    		for(double y = beginY - 1; y > beginY - 11; y--)
+    		}
+    		for(double y = beginY - 1; y > beginY - 11; y--) {
     			player.setY(y);
+    		}
     		return true;
     	}
     	return false;
