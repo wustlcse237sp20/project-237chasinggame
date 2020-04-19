@@ -6,16 +6,23 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import code.Maze;
 import code.AStar.AStar;
 
 class AStarAlgorithmTest {
-
+	
+	Maze m;
+	
+	@BeforeEach
+	void init() {
+		m = new Maze(250, 250, false);
+	}
+	
 	@Test
 	void positionStartSetTest() {
-		Maze m = new Maze(false);
 		boolean[][] walls = m.getWalls();
 		int width = walls.length, height = walls[0].length;
 		
@@ -31,7 +38,6 @@ class AStarAlgorithmTest {
 
 	@Test
 	void positionEndSetTest() {
-		Maze m = new Maze(false);
 		boolean[][] walls = m.getWalls();
 		int width = walls.length, height = walls[0].length;
 		
@@ -47,7 +53,6 @@ class AStarAlgorithmTest {
 	
 	@Test
 	void findsEndTest() {
-		Maze m = new Maze(false);
 		boolean[][] walls = m.getWalls();
 		int width = walls.length, height = walls[0].length;
 		int startx = 1, starty = 1;
@@ -71,7 +76,6 @@ class AStarAlgorithmTest {
 	
 	@Test
 	void numberOfMoves() {
-		Maze m = new Maze(false);
 		boolean[][] walls = m.getWalls();
 		int width = walls.length, height = walls[0].length;
 		int startx = 1, starty = 1;
