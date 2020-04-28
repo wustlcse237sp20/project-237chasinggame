@@ -76,9 +76,6 @@ public class Maze extends Pad{
     public void drawMaze(boolean drawMaze) {
     	// put in all walls
     	putInAllWalls();
-    	//remove starting wall
-    	removeStartWall();
-    	removeEndWall();
     	removeWallsToMakeValid(5,5);
     	if (drawMaze) {
     		drawWalls();
@@ -105,23 +102,7 @@ public class Maze extends Pad{
     	}
     }
 	
-	/**
-	 * Removes wall at the beginning
-	 */
-	public void removeStartWall() {
-		for(int row = 0; row < 10; row++) {
-			walls[row][0] = false;
-		}
-	}
 	
-	/**
-	 * Removes wall at the end
-	 */
-	public void removeEndWall() {
-		for(int col = 0; col < 10; col++) {
-			walls[height - col][width] = false;
-		}
-	}
 	
 	/**
 	 * Removes wall at specified row and column to make it a valid maze
