@@ -9,6 +9,8 @@ import doodlepad.*;
 public class Maze extends Pad{
 	int width;
 	int height;
+	int playerMovesMade = 0;
+	Text score;
 	enum Orientation{
 		up, right, down, left
 	}
@@ -30,7 +32,8 @@ public class Maze extends Pad{
 	 * Constructor for a Maze
 	 */
 	public Maze(int width, int height){
-		super(width, height);
+		super(width+300, height+100);
+		score =  new Text("Score: 0", width+50, 20);
 		this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
@@ -44,7 +47,8 @@ public class Maze extends Pad{
 	 * @param drawMaze indicates whether you should draw maze for the human on the GUI, which would slow down tests by a lot
 	 */
     public Maze(int width, int height, boolean drawMaze) {
-    	super(width, height);
+		super(width+300, height+100);
+		score =  new Text("Score: 0", width+50, 20);
     	this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
@@ -202,6 +206,8 @@ public class Maze extends Pad{
 	 */
     public void onKeyPressed(String keyText, String keyModifiers) {
     	this.moveComputers();
+    	playerMovesMade++;
+    	score.setText("Score: "+ playerMovesMade);
     	if(player1.getX() >= width && player1.getY() >= height - 10) {
     		return;
     	}
