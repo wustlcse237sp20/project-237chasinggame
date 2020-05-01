@@ -10,6 +10,7 @@ public class Maze extends Pad{
 	int width;
 	int height;
 	int playerMovesMade = 0;
+	boolean gameOver = false;
 	Text score;
 	enum Orientation{
 		up, right, down, left
@@ -186,7 +187,6 @@ public class Maze extends Pad{
 	 * Reads input from keyboard
 	 */
     public void onKeyPressed(String keyText, String keyModifiers) {
-    	this.moveComputers();
     	playerMovesMade++;
     	score.setText("Score: "+ playerMovesMade);
     	if(player1.getX() >= width && player1.getY() >= height - 10) {
@@ -204,6 +204,17 @@ public class Maze extends Pad{
     	else if(keyText.equals("S")) {
     		moveDown(player1);
     	}
+    	boolean [] computerMovesRemain = this.moveComputers();
+    	boolean caught = false;
+    	for(boolean computer : computerMovesRemain) {
+    		if(!computer) {
+    			caught = true;
+    		}
+    	}
+    	if(caught) {
+    		endGame();
+    	}
+
     	
     }
     
@@ -324,7 +335,26 @@ public class Maze extends Pad{
 	    		}
 	    	}
     }
+    /**
+	 * Ends the game/level. To be called when player is caught.
+	 */
+    public void endGame() {
+    	this.setEventsEnabled(false);
+    	gameOver = true;
+    	Rectangle endRectangle = new Rectangle (25, 25, 400, 75);
+    	endRectangle.setFillColor(255);
+    	endRectangle.toFront();
+    	Text endText = new Text("The game is over, you were caught. Final score: " + playerMovesMade, 50, 50);
+    	endText.toFront();
+    }
     
+    /**
+     * Returns whether game is over
+     * @return boolean gameOver
+     */
+    public boolean getGameOver() {
+    	return gameOver;
+    }
     /**
 	 * Returns maze height
 	 * @return maze height
@@ -367,7 +397,7 @@ public class Maze extends Pad{
     
     /**
 	 * Runs the computer through the optimal path
-	 * @return if the computer has reached the solution
+	 * @return if computer isn't at end of path
 	 */
     
     public boolean[] moveComputers() {
