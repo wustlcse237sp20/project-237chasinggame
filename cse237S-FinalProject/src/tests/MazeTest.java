@@ -64,7 +64,7 @@ class MazeTest extends Maze {
 			this.moveRight(r);
 			assert((oldX + 10) == (int)r.getX() && oldY == (int)r.getY());
 		}
-		else if (!walls[(int)r.getY()][(int)r.getX()-9]) {
+		else if (!walls[(int)r.getY()][(int)r.getX()-1]) {
 			this.moveLeft(r);
 			assert((oldX-10) == (int)r.getX() && oldY == (int)r.getY());
 		}
@@ -130,5 +130,19 @@ class MazeTest extends Maze {
     	return false;
 	}
 	
+	@Test
+	void testGameOver() {
+		boolean flag = false;
+		while(!flag) {
+			boolean [] moves = moveComputers();
+			for(int i =0; i< moves.length; i++) {
+				if(!moves[i])
+					flag = true;
+			}
+		}
+		onKeyPressed("W","");
+		Assert.assertTrue(getGameOver());
+		
+	}
 
 }
