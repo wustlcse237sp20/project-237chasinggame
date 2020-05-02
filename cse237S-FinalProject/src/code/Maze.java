@@ -9,6 +9,9 @@ import doodlepad.*;
 public class Maze extends Pad{
 	int width;
 	int height;
+	int playerMovesMade = 0;
+	boolean gameOver = false;
+	Text score;
 	enum Orientation{
 		up, right, down, left
 	}
@@ -30,7 +33,8 @@ public class Maze extends Pad{
 	 * Constructor for a Maze
 	 */
 	public Maze(int width, int height){
-		super(width, height);
+		super(width+300, height+100);
+		score =  new Text("Score: 0", width+50, 20);
 		this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
@@ -44,7 +48,8 @@ public class Maze extends Pad{
 	 * @param drawMaze indicates whether you should draw maze for the human on the GUI, which would slow down tests by a lot
 	 */
     public Maze(int width, int height, boolean drawMaze) {
-    	super(width, height);
+		super(width+300, height+100);
+		score =  new Text("Score: 0", width+50, 20);
     	this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
@@ -72,9 +77,6 @@ public class Maze extends Pad{
     public void drawMaze(boolean drawMaze) {
     	// put in all walls
     	putInAllWalls();
-    	//remove starting wall
-    	removeStartWall();
-    	removeEndWall();
     	removeWallsToMakeValid(5,5);
     	if (drawMaze) {
     		drawWalls();
@@ -101,23 +103,7 @@ public class Maze extends Pad{
     	}
     }
 	
-	/**
-	 * Removes wall at the beginning
-	 */
-	public void removeStartWall() {
-		for(int row = 0; row < 10; row++) {
-			walls[row][0] = false;
-		}
-	}
 	
-	/**
-	 * Removes wall at the end
-	 */
-	public void removeEndWall() {
-		for(int col = 0; col < 10; col++) {
-			walls[height - col][width] = false;
-		}
-	}
 	
 	/**
 	 * Removes wall at specified row and column to make it a valid maze
@@ -201,7 +187,8 @@ public class Maze extends Pad{
 	 * Reads input from keyboard
 	 */
     public void onKeyPressed(String keyText, String keyModifiers) {
-    	this.moveComputers();
+    	playerMovesMade++;
+    	score.setText("Score: "+ playerMovesMade);
     	if(player1.getX() >= width && player1.getY() >= height - 10) {
     		return;
     	}
@@ -217,6 +204,17 @@ public class Maze extends Pad{
     	else if(keyText.equals("S")) {
     		moveDown(player1);
     	}
+    	boolean [] computerMovesRemain = this.moveComputers();
+    	boolean caught = false;
+    	for(boolean computer : computerMovesRemain) {
+    		if(!computer) {
+    			caught = true;
+    		}
+    	}
+    	if(caught) {
+    		endGame();
+    	}
+
     	
     }
     
@@ -337,7 +335,26 @@ public class Maze extends Pad{
 	    		}
 	    	}
     }
+    /**
+	 * Ends the game/level. To be called when player is caught.
+	 */
+    public void endGame() {
+    	this.setEventsEnabled(false);
+    	gameOver = true;
+    	Rectangle endRectangle = new Rectangle (25, 25, 400, 75);
+    	endRectangle.setFillColor(255);
+    	endRectangle.toFront();
+    	Text endText = new Text("The game is over, you were caught. Final score: " + playerMovesMade, 50, 50);
+    	endText.toFront();
+    }
     
+    /**
+     * Returns whether game is over
+     * @return boolean gameOver
+     */
+    public boolean getGameOver() {
+    	return gameOver;
+    }
     /**
 	 * Returns maze height
 	 * @return maze height
@@ -380,7 +397,7 @@ public class Maze extends Pad{
     
     /**
 	 * Runs the computer through the optimal path
-	 * @return if the computer has reached the solution
+	 * @return if computer isn't at end of path
 	 */
     
     public boolean[] moveComputers() {

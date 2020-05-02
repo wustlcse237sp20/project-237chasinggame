@@ -2,7 +2,7 @@
 
 ### Brief Description ###
 
-Our project will implement artificial intelligence algorithms such as the A* algorithm and the Q-Learning algorithm in order to make one player run away from another. After sufficient training, the human should be able to play as the player being chased. 
+We started this project thinking we would implement artificial intelligence algorithms such as the A Star algorithm and the Q-Learning algorithm in order to make one player run away from the enemy. After sufficient training, the human should be able to play as the player being chased. In the end, we decided to turn this into a game with levels, where the player would instead be controlled by the user and would be chased by multiple enemies which all use artificial intelligence.
 
 Start game by running "java -jar RunGame.jar" from terminal If that doesn't work due to dependencies, resort to running RunGame.java (located in src/code/) in Eclipse or IDE. 
 
@@ -42,3 +42,28 @@ Start game by running "java -jar RunGame.jar" from terminal If that doesn't work
 ##### Is there anything that you implemented but doesn't currently work?
 * Single enemies are working, but there is no scoring mechanism yet
 * We implemented drawing a maze of given size, but we haven't implemented changing mazes / trying different maze sizes
+
+### Iteration 3 ###
+
+##### What user stories were completed this iteration?
+* *Based on Iteration 2 Feedback:* Added many more JUnit tests for component testing
+* The user should be scored on how well they navigate the maze and avoid the enemies
+* The user should be able to see their score displayed
+* The user should restart the game when they get caught
+* The user should be able to go up in difficulty as they get better scores
+* The user sees a score that they must beat in order to advance
+* The enemies spawn as the levels get incrementally harder
+
+##### Is there anything that you implemented but doesn't currently work? #####
+* NA
+
+##### Additional User Stories - Potential Future Additions #####
+* Use a GUI instead of the console so that the game looks cleaner.
+* The enemies should be able to move based on a timer, instead of a turn based game
+* Make each enemy use a different artificial intelligence technique to see which ones are the best
+
+##### Video Included with Repository #####
+* Showcase
+* Anything incomplete
+* Bugs / Issues
+* Lessons / Going Forward
