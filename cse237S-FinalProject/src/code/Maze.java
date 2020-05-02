@@ -37,7 +37,7 @@ public class Maze extends Pad{
 		
 		super(width+300, height+100);
 		this.setEventsEnabled(false);
-		score =  new Text("Score: 0", width+50, 20);
+		score =  new Text("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5, width+50, 20);
 		this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
@@ -56,7 +56,9 @@ public class Maze extends Pad{
     public Maze(int width, int height, boolean drawMaze) {
 		super(width+300, height+100);
 		this.setEventsEnabled(false);
-		score =  new Text("Score: 0", width+50, 20);
+		score =  new Text("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5, width+50, 20);
+    	
+
     	this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
@@ -73,7 +75,7 @@ public class Maze extends Pad{
     public Maze(int width, int height, boolean drawMaze, int numComputers) {
 		super(width+300, height+100);
 		this.setEventsEnabled(false);
-		score =  new Text("Score: 0", width+50, 20);
+		score =  new Text("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5, width+50, 20);
     	this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
@@ -225,7 +227,8 @@ public class Maze extends Pad{
 	 */
     public void onKeyPressed(String keyText, String keyModifiers) {
     	playerMovesMade++;
-    	score.setText("Score: "+ playerMovesMade);
+    	score.setText("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5);
+    	
     	if(player1.getX() >= width && player1.getY() >= height - 10) {
     		return;
     	}
@@ -245,14 +248,6 @@ public class Maze extends Pad{
     	moveComputers();
     	if(gameOver()) {
     		endGame();
-//    		try {
-//				Thread.sleep(2000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}finally {
-//				System.exit(0);
-//			}
     	}
 
     	
@@ -384,7 +379,7 @@ public class Maze extends Pad{
     	Rectangle endRectangle = new Rectangle (25, 25, 400, 75);
     	endRectangle.setFillColor(255);
     	endRectangle.toFront();
-    	Text endText = new Text("The game is over, you were caught. Final score: " + playerMovesMade, 50, 50 );
+    	Text endText = new Text("You were caught on level "+ this.numComputers+ " Final score: " + playerMovesMade, 50, 50 );
     	endText.toFront();
     	
     }
