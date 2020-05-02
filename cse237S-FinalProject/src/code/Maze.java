@@ -10,6 +10,7 @@ public class Maze extends Pad{
 	int width;
 	int height;
 	int playerMovesMade = 0;
+	int numComputers = 0;
 	boolean gameOver = false;
 	Text score;
 	enum Orientation{
@@ -33,14 +34,19 @@ public class Maze extends Pad{
 	 * Constructor for a Maze
 	 */
 	public Maze(int width, int height){
+		
 		super(width+300, height+100);
-		score =  new Text("Score: 0", width+50, 20);
+		this.setEventsEnabled(false);
+		score =  new Text("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5, width+50, 20);
 		this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
 		walls = new boolean[height + 1][width + 1];
-    	drawMaze(true);
+    	numComputers = 4;
+		drawMaze(true);
+    	
     	this.initializeComputerSolutions(4);
+    	this.setEventsEnabled(true);
     }
 	
 	/**
@@ -49,20 +55,45 @@ public class Maze extends Pad{
 	 */
     public Maze(int width, int height, boolean drawMaze) {
 		super(width+300, height+100);
-		score =  new Text("Score: 0", width+50, 20);
+		this.setEventsEnabled(false);
+		score =  new Text("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5, width+50, 20);
+    	
+
     	this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
 		walls = new boolean[height + 1][width + 1];
-    	drawMaze(drawMaze);
+		numComputers = 4;
+		drawMaze(drawMaze);
     	
     	this.initializeComputerSolutions(4);
+    	this.setEventsEnabled(true);
+
+    	//uncomment below for player1 to solve following right wall
+//    	rightWallBot();
+    }
+    public Maze(int width, int height, boolean drawMaze, int numComputers) {
+		super(width+300, height+100);
+		this.setEventsEnabled(false);
+		score =  new Text("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5, width+50, 20);
+    	this.width = width;
+		this.height = height;
+		visitedBFS = new boolean[height + 1][width + 1];
+		walls = new boolean[height + 1][width + 1];
+    	
+		this.numComputers = numComputers;
+		drawMaze(drawMaze);
+    	
+    	this.initializeComputerSolutions(numComputers);
+    	this.setEventsEnabled(true);
 
     	//uncomment below for player1 to solve following right wall
 //    	rightWallBot();
     }
     
-    
+    public int getPlayerMovesMade() {
+    	return this.playerMovesMade;
+    }
     private void initializeComputerSolutions(int numComputers) {
     	for(int i=0; i< numComputers; i++) {
     		AStar computerSolution = new AStar(walls, (int)computers.get(i).getX(), (int)computers.get(i).getY(), (int)player1.getX(), (int)player1.getY());
@@ -81,7 +112,7 @@ public class Maze extends Pad{
     	if (drawMaze) {
     		drawWalls();
     	}
-    	this.setupComputers(4);
+    	this.setupComputers(this.numComputers);
 
     	setupPlayer();
     	player1.toFront();
@@ -182,13 +213,22 @@ public class Maze extends Pad{
     		c.toFront();
     	}
     }
+    public boolean gameOver() {
+    	for(Rectangle c: this.computers) {
+    		if(c.getX() == this.player1.getX() && c.getY() == this.player1.getY()) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
     
     /**
 	 * Reads input from keyboard
 	 */
     public void onKeyPressed(String keyText, String keyModifiers) {
     	playerMovesMade++;
-    	score.setText("Score: "+ playerMovesMade);
+    	score.setText("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5);
+    	
     	if(player1.getX() >= width && player1.getY() >= height - 10) {
     		return;
     	}
@@ -204,14 +244,9 @@ public class Maze extends Pad{
     	else if(keyText.equals("S")) {
     		moveDown(player1);
     	}
-    	boolean [] computerMovesRemain = this.moveComputers();
-    	boolean caught = false;
-    	for(boolean computer : computerMovesRemain) {
-    		if(!computer) {
-    			caught = true;
-    		}
-    	}
-    	if(caught) {
+    	
+    	moveComputers();
+    	if(gameOver()) {
     		endGame();
     	}
 
@@ -344,8 +379,9 @@ public class Maze extends Pad{
     	Rectangle endRectangle = new Rectangle (25, 25, 400, 75);
     	endRectangle.setFillColor(255);
     	endRectangle.toFront();
-    	Text endText = new Text("The game is over, you were caught. Final score: " + playerMovesMade, 50, 50);
+    	Text endText = new Text("You were caught on level "+ this.numComputers+ " Final score: " + playerMovesMade, 50, 50 );
     	endText.toFront();
+    	
     }
     
     /**
