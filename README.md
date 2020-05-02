@@ -46,13 +46,12 @@ Start game by running "java -jar RunGame.jar" from terminal If that doesn't work
 ### Iteration 3 ###
 
 ##### What user stories were completed this iteration?
-* *Based on Iteration 2 Feedback:* Added many more JUnit tests for component testing
+* *Based on Iteration 2 Feedback:
+* Added many more JUnit tests for component testing
 * The user should be scored on how well they navigate the maze and avoid the enemies
 * The user should be able to see their score displayed
-* The user should restart the game when they get caught
-* The user should be able to go up in difficulty as they get better scores
+* If the user has reached a score threshold once caught, the user moves on to the next level which has an extra enemy.
 * The user sees a score that they must beat in order to advance
-* The enemies spawn as the levels get incrementally harder
 
 ##### Is there anything that you implemented but doesn't currently work? #####
 * NA
