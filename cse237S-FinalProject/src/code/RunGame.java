@@ -1,7 +1,10 @@
 package code;
 import java.util.Scanner;
 public class RunGame {
-	public static void main (String[] args) {
+	
+	public static Maze runGame(int level, Maze prevMaze) {
+		
+		if(prevMaze == null) {
 		System.out.println("Starting maze game! Get to the bottom right corner");
 		System.out.println("Please enter your desired maze size in the following format: width,height (minimum of 150) ex: 170,180");
 		boolean flag = false;
@@ -31,7 +34,32 @@ public class RunGame {
 		
 		x = x - (x % 10);
 		y = y - (y % 10);
-
-		Maze maze = new Maze(x, y);
+		
+		return new Maze(x, y, true, level);
+		} else {
+			return new Maze(prevMaze.getMazeWidth(), prevMaze.getMazeHeight(), true, level);
+		}
+	}
+	
+	
+	public static void main (String[] args) {
+		int level = 1;
+		Maze maze = runGame(level, null);
+		while(true) {
+			
+			if(maze.getGameOver()) {
+				if(maze.getPlayerMovesMade() > 10) {
+					level++;
+					maze = runGame(level,maze);
+					
+				}else {
+					break;
+				}
+			}
+		}
+		
+		System.out.println("The game ended you reached level "+level);
+		System.out.println("Nice WORK!!!!");
+		
 	}
 }
