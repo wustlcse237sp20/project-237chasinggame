@@ -9,10 +9,12 @@ import doodlepad.*;
 public class Maze extends Pad{
 	int width;
 	int height;
+
 	int playerMovesMade = 0;
 	int numComputers = 0;
 	boolean gameOver = false;
 	Text score;
+  
 	enum Orientation{
 		up, right, down, left
 	}
@@ -34,7 +36,6 @@ public class Maze extends Pad{
 	 * Constructor for a Maze
 	 */
 	public Maze(int width, int height){
-		
 		super(width+300, height+100);
 		this.setEventsEnabled(false);
 		score =  new Text("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5, width+50, 20);
@@ -42,7 +43,7 @@ public class Maze extends Pad{
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
 		walls = new boolean[height + 1][width + 1];
-    	numComputers = 4;
+    numComputers = 4;
 		drawMaze(true);
     	
     	this.initializeComputerSolutions(4);
@@ -57,8 +58,7 @@ public class Maze extends Pad{
 		super(width+300, height+100);
 		this.setEventsEnabled(false);
 		score =  new Text("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5, width+50, 20);
-    	
-    	this.width = width;
+    this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
 		walls = new boolean[height + 1][width + 1];
@@ -104,6 +104,9 @@ public class Maze extends Pad{
     public void drawMaze(boolean drawMaze) {
     	// put in all walls
     	putInAllWalls();
+    	//remove starting wall
+    	removeStartWall();
+    	removeEndWall();
     	removeWallsToMakeValid(5,5);
     	if (drawMaze) {
     		drawWalls();
@@ -220,7 +223,7 @@ public class Maze extends Pad{
     public void onKeyPressed(String keyText, String keyModifiers) {
     	playerMovesMade++;
     	score.setText("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5);
-    	
+
     	if(player1.getX() >= width && player1.getY() >= height - 10) {
     		return;
     	}
@@ -359,6 +362,7 @@ public class Maze extends Pad{
 	    		}
 	    	}
     }
+  
     /**
 	 * Ends the game/level. To be called when player is caught.
 	 */
@@ -373,13 +377,6 @@ public class Maze extends Pad{
     	
     }
     
-    /**
-     * Returns whether game is over
-     * @return boolean gameOver
-     */
-    public boolean getGameOver() {
-    	return gameOver;
-    }
     /**
 	 * Returns maze height
 	 * @return maze height
@@ -429,7 +426,7 @@ public class Maze extends Pad{
     
     /**
 	 * Runs the computer through the optimal path
-	 * @return if computer isn't at end of path
+	 * @return if the computer has reached the solution
 	 */
     
     public boolean[] moveComputers() {

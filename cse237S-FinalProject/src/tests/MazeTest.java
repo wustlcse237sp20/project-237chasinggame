@@ -22,10 +22,20 @@ class MazeTest extends Maze {
 	public MazeTest() {
 		super(250, 250, false);
 	}
+
+	@Test
+	void testMazeCreation() {
+		for(int r = 0; r < 10; r++) {
+			if(this.getWalls()[r][0]) {
+				fail("Starting walls not removed");
+			}
+		}
+		assertTrue(true); // if I arrive here, no error occurred
+	}
 	
 	@Test
 	void boundaryCheck() {
-		for(int h = 0; h <= this.getMazeHeight(); h++) {
+		for(int h = 10; h <= this.getMazeHeight(); h++) {
 			if(!this.getWalls()[h][0]) {
 				fail("Erroneous left boundary walls removed");
 			}
@@ -40,7 +50,7 @@ class MazeTest extends Maze {
 				fail("Erroneous bottom boundary walls removed");
 			}
 		}
-		for(int h = this.getMazeHeight()-1; h >= 0; h--) {
+		for(int h = this.getMazeHeight()-10; h >= 0; h--) {
 			if(!this.getWalls()[h][this.getMazeWidth()]) {
 				fail("Erroneous right boundary walls removed");
 			}
@@ -87,7 +97,7 @@ class MazeTest extends Maze {
 			this.moveRight(r);
 			assert((oldX + 10) == (int)r.getX() && oldY == (int)r.getY());
 		}
-		else if (!walls[(int)r.getY()][(int)r.getX()-1]) {
+		else if (!walls[(int)r.getY()][(int)r.getX()-9]) {
 			this.moveLeft(r);
 			assert((oldX-10) == (int)r.getX() && oldY == (int)r.getY());
 		}
@@ -153,20 +163,6 @@ class MazeTest extends Maze {
     	return false;
 	}
 	
-	@Test
-	void testGameOver() {
-		boolean flag = false;
-		while(!flag) {
-			boolean [] moves = moveComputers();
-			for(int i =0; i< moves.length; i++) {
-				if(!moves[i])
-					flag = true;
-			}
-		}
-		onKeyPressed("W","");
-		Assert.assertTrue(getGameOver());
-		
-	}
 
 	@Test
 	void testPathLength() {

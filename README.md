@@ -2,7 +2,7 @@
 
 ### Brief Description ###
 
-We started this project thinking we would implement artificial intelligence algorithms such as the A Star algorithm and the Q-Learning algorithm in order to make one player run away from the enemy. After sufficient training, the human should be able to play as the player being chased. In the end, we decided to turn this into a game with levels, where the player would instead be controlled by the user and would be chased by multiple enemies which all use artificial intelligence.
+Our project will implement artificial intelligence algorithms such as the A* algorithm and the Q-Learning algorithm in order to make one player run away from another. After sufficient training, the human should be able to play as the player being chased. 
 
 Start game by running "java -jar RunGame.jar" from terminal If that doesn't work due to dependencies, resort to running RunGame.java (located in src/code/) in Eclipse or IDE. 
 
@@ -41,6 +41,7 @@ Start game by running "java -jar RunGame.jar" from terminal If that doesn't work
 
 ##### Is there anything that you implemented but doesn't currently work?
 * Single enemies are working, but there is no scoring mechanism yet
+
 * We implemented drawing a maze of given size, but we haven't implemented changing mazes / trying different maze sizes
 
 ### Iteration 3 ###
@@ -66,3 +67,5 @@ Start game by running "java -jar RunGame.jar" from terminal If that doesn't work
 * Anything incomplete
 * Bugs / Issues
 * Lessons / Going Forward
+=======
+* We implemented drawing a maze of given size, but we haven't implemented changing mazes / trying different maze sizes
