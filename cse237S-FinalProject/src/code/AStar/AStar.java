@@ -76,6 +76,8 @@ public class AStar {
 		priorityQueue.add(start);
 		while(!priorityQueue.isEmpty()) {
 			AStarNode current = priorityQueue.poll();
+			
+			//don't return to a previously visited location
 			if(visited[current.getY()][current.getX()]) {
 				continue;
 			}
@@ -85,6 +87,7 @@ public class AStar {
 				return current.getMoves();
 			}
 			
+			//attempt to visit all four directions from current position, adding it to priority queue if possible
 			if(current.getX() + 10 < visited[0].length && !visited[current.getY()][current.getX() + 10] && !visited[current.getY()][current.getX() + 9] )
 				priorityQueue.add(new AStarNode(current.getX() + 10, current.getY(), current));
 			if(current.getX() - 10 > -1 &&!visited[current.getY()][current.getX() - 10] && !visited[current.getY()][current.getX() - 1])
@@ -147,6 +150,7 @@ public class AStar {
 	 * @return PriorityQueue necessary for AStar
 	 */
 	private static PriorityQueue<AStarNode> createAStarPQ() {
+		//creates modified comparator that can determine priority based on calculated path distance between enemy and player locations
 		Comparator<AStarNode> nodeComparator = new Comparator<AStarNode>() {
 			@Override
 			public int compare(AStarNode a1, AStarNode a2) {
