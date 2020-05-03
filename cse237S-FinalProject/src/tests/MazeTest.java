@@ -55,6 +55,25 @@ class MazeTest extends Maze {
 	}
 	
 	@Test
+	void testSetupComputers() {
+		this.setupComputers(5);
+		assertTrue(this.getComputers().size() == (4+5));
+	}
+	
+	@Test
+	void testPlayerMovesCount() {
+		for (int i = 0; i < 10; i++) {
+			onKeyPressed("W","");
+		}
+		assertTrue(this.getPlayerMovesMade() == 10);
+	}
+	
+	@Test
+	void testSimpleGetters() {
+		assertTrue(this.getMazeWidth() == this.getMazeHeight() && this.getMazeHeight() == 250);
+	}
+	
+	@Test
 	void testPlayerMovement() {
 		boolean[][] walls = this.getWalls();
 		Rectangle r = this.getPlayer();

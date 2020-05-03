@@ -72,6 +72,7 @@ public class Maze extends Pad{
     	//uncomment below for player1 to solve following right wall
 //    	rightWallBot();
     }
+    
     public Maze(int width, int height, boolean drawMaze, int numComputers) {
 		super(width+300, height+100);
 		this.setEventsEnabled(false);
