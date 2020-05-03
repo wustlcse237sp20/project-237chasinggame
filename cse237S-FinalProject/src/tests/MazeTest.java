@@ -172,7 +172,6 @@ class MazeTest extends Maze {
 	void testPathLength() {
 		AStar sol = new AStar(this.getWalls(), 11, 11, 121, 121);
 		ArrayList<MOVE> path = sol.getPath();
-		System.out.println(path.size());
 		if (path.size() < 22) {
 			fail("Path length is less than shortest possible Manhattan distance (22)");
 		}
