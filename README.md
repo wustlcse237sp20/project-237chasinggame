@@ -61,6 +61,9 @@ Start game by running "java -jar RunGame.jar" from terminal If that doesn't work
 * Use a GUI instead of the console so that the game looks cleaner.
 * The enemies should be able to move based on a timer, instead of a turn based game
 * Make each enemy use a different artificial intelligence technique to see which ones are the best
+* Add option to automatically move on to next level once a score threshold is reached, rather than only after a player is caught.
+* Have random changes in the maze walls after certain time or score thresholds (or random addition of new enemies)
+* Have power up abilities that allow a player to remove an enemy by running into it (instead of getting eliminated) or travel through a limited set of walls.
 
 ##### Video Included with Repository #####
 * Showcase
