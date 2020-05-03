@@ -45,18 +45,23 @@ public class RunGame {
 	
 	public static void main (String[] args) {
 		int level = 1;
+		
+		long lastTime = System.currentTimeMillis();
+		
 		Maze maze = runGame(level, null);
 		while(true) {
-			
-			if(maze.getGameOver()) {
-				if(maze.getPlayerMovesMade() > Math.min(maze.getMazeHeight(), maze.getMazeWidth())/5) {
-					if(level >= 11 ) {
+			if(System.currentTimeMillis() - lastTime > 1000) {
+				lastTime = System.currentTimeMillis();
+				if(maze.getGameOver()) {
+					if(maze.getPlayerMovesMade() > Math.min(maze.getMazeHeight(), maze.getMazeWidth())/5) {
+						if(level >= 11 ) {
+							break;
+						}
+						level++;
+						maze = runGame(level,maze);
+					} else {
 						break;
 					}
-					level++;
-					maze = runGame(level,maze);
-				} else {
-					break;
 				}
 			}
 		}
