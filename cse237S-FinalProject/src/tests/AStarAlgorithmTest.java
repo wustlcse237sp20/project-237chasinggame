@@ -80,18 +80,14 @@ class AStarAlgorithmTest {
 		int width = walls.length, height = walls[0].length;
 		int startx = 1, starty = 1;
 		
-		for(int i=1; i<width; i+=10) {
+		for (int i=1; i<width; i+=10) {
 			for(int j =1; j<height; j+=10) {
 				int endx = i, endy = j;
 				int minMoves = (Math.abs(startx-endx)+Math.abs(starty-endy))/10;
 				AStar as = new AStar(walls, startx, starty, endx, endy);
 				int numMoves = as.getPath().size();
 				assertTrue(numMoves>=minMoves);
-			
 			}
-			
 		}
-
 	}
-
 }
