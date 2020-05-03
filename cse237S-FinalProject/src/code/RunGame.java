@@ -17,8 +17,7 @@ public class RunGame {
 					if (Integer.parseInt(s[0]) < 150 || Integer.parseInt(s[1]) < 150) {
 						System.out.println("Error, please try again with the correct format.");
 						continue;
-					}
-					else {
+					} else {
 						x = Integer.parseInt(s[0]);
 						y = Integer.parseInt(s[1]);
 						flag = true;
@@ -56,15 +55,14 @@ public class RunGame {
 					}
 					level++;
 					maze = runGame(level,maze);
-					
-				}else {
+				} else {
 					break;
 				}
 			}
 		}
 		if(level == 10) {
 			System.out.println("You have won the game!!");
-		}else {
+		} else {
 			System.out.println("The game ended you reached level "+level);
 		}
 		System.out.println("Nice WORK!!!!");

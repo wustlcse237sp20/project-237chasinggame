@@ -58,7 +58,6 @@ public class Maze extends Pad{
 		this.setEventsEnabled(false);
 		score =  new Text("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5, width+50, 20);
     	
-
     	this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
@@ -92,15 +91,11 @@ public class Maze extends Pad{
 //    	rightWallBot();
     }
     
-    public int getPlayerMovesMade() {
-    	return this.playerMovesMade;
-    }
     private void initializeComputerSolutions(int numComputers) {
     	for(int i=0; i< numComputers; i++) {
     		AStar computerSolution = new AStar(walls, (int)computers.get(i).getX(), (int)computers.get(i).getY(), (int)player1.getX(), (int)player1.getY());
     		computerSolutionPaths.add(computerSolution.getPath());
     	}
-
     }
     /**
 	 * Draw the maze
@@ -114,7 +109,6 @@ public class Maze extends Pad{
     		drawWalls();
     	}
     	this.setupComputers(this.numComputers);
-
     	setupPlayer();
     	player1.toFront();
     	}
@@ -134,8 +128,6 @@ public class Maze extends Pad{
     			}
     	}
     }
-	
-	
 	
 	/**
 	 * Removes wall at specified row and column to make it a valid maze
@@ -184,15 +176,14 @@ public class Maze extends Pad{
     	for(int row = 0; row <= height; row++) {
     		for(int col = 0; col <= width; col++) {
     			if(walls[row][col])
-	    	    		if(row + 1<= height && walls[row + 1][col]) {
-	    	    			new Line(col, row, col, row + 1);
-	    	    		}
-	    	    		if(col + 1 <= width && walls[row][col + 1]) {
-	    	    			new Line(col, row, col + 1, row);
-	    	    		}    	    	
+    	    		if(row + 1<= height && walls[row + 1][col]) {
+    	    			new Line(col, row, col, row + 1);
+    	    		}
+    	    		if(col + 1 <= width && walls[row][col + 1]) {
+    	    			new Line(col, row, col + 1, row);
+    	    		}    	    	
     		}
     	}
-    	
     	
     }
     
@@ -250,8 +241,6 @@ public class Maze extends Pad{
     	if(gameOver()) {
     		endGame();
     	}
-
-    	
     }
     
     /**
@@ -306,7 +295,6 @@ public class Maze extends Pad{
     		}
     		return true;
     	}
-
     	return false;
     }
     
@@ -433,6 +421,13 @@ public class Maze extends Pad{
     }
     
     /**
+	 * @return number of player moves made
+	 */
+    public int getPlayerMovesMade() {
+    	return this.playerMovesMade;
+    }
+    
+    /**
 	 * Runs the computer through the optimal path
 	 * @return if computer isn't at end of path
 	 */
@@ -442,11 +437,11 @@ public class Maze extends Pad{
     	for(int i=0; i<computers.size(); i++) {
     		Rectangle computer = computers.get(i);
     		AStar computerSolution = new AStar(walls, (int)computer.getX(), (int)computer.getY(), (int)player1.getX(), (int)player1.getY());
-    		computerSolutionPaths.set(i, computerSolution.getPath()); 
-    		
+    		computerSolutionPaths.set(i, computerSolution.getPath()); // replaces old computer solution path for each enemy every turn
+   
+    		//retrieve the path from current enemy location to current player location
     		ArrayList<MOVE> computerSolutionPath = computerSolutionPaths.get(i);
-    		
-    		
+	
         	if(computerPositionInSolution < computerSolutionPath.size()) {
         		MOVE compMove = computerSolutionPath.get(0); // Getting the next move
         		if(compMove == MOVE.DOWN) {
