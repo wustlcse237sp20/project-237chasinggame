@@ -41,4 +41,31 @@ Start game by running "java -jar RunGame.jar" from terminal If that doesn't work
 
 ##### Is there anything that you implemented but doesn't currently work?
 * Single enemies are working, but there is no scoring mechanism yet
+
+* We implemented drawing a maze of given size, but we haven't implemented changing mazes / trying different maze sizes
+
+### Iteration 3 ###
+
+##### What user stories were completed this iteration?
+* *Based on Iteration 2 Feedback:
+* Added many more JUnit tests for component testing
+* The user should be scored on how well they navigate the maze and avoid the enemies
+* The user should be able to see their score displayed
+* If the user has reached a score threshold once caught, the user moves on to the next level which has an extra enemy.
+* The user sees a score that they must beat in order to advance
+
+##### Is there anything that you implemented but doesn't currently work? #####
+* NA
+
+##### Additional User Stories - Potential Future Additions #####
+* Use a GUI instead of the console so that the game looks cleaner.
+* The enemies should be able to move based on a timer, instead of a turn based game
+* Make each enemy use a different artificial intelligence technique to see which ones are the best
+
+##### Video Included with Repository #####
+* Showcase
+* Anything incomplete
+* Bugs / Issues
+* Lessons / Going Forward
+=======
 * We implemented drawing a maze of given size, but we haven't implemented changing mazes / trying different maze sizes

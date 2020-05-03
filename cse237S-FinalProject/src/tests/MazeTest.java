@@ -5,11 +5,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import code.Maze;
+import code.AStar.AStar;
+import code.AStar.AStarNode;
+import code.AStar.AStarNode.MOVE;
 import doodlepad.*;
 
 class MazeTest extends Maze {
@@ -62,6 +66,25 @@ class MazeTest extends Maze {
 			assertTrue(this.moveRight(r));
 		}
 		assertTrue(false == this.moveRight(r));
+	}
+	
+	@Test
+	void testSetupComputers() {
+		this.setupComputers(5);
+		assertTrue(this.getComputers().size() == (4+5));
+	}
+	
+	@Test
+	void testPlayerMovesCount() {
+		for (int i = 0; i < 10; i++) {
+			onKeyPressed("W","");
+		}
+		assertTrue(this.getPlayerMovesMade() == 10);
+	}
+	
+	@Test
+	void testSimpleGetters() {
+		assertTrue(this.getMazeWidth() == this.getMazeHeight() && this.getMazeHeight() == 250);
 	}
 	
 	@Test
@@ -141,4 +164,12 @@ class MazeTest extends Maze {
 	}
 	
 
+	@Test
+	void testPathLength() {
+		AStar sol = new AStar(this.getWalls(), 11, 11, 121, 121);
+		ArrayList<MOVE> path = sol.getPath();
+		if (path.size() < 22) {
+			fail("Path length is less than shortest possible Manhattan distance (22)");
+		}
+	}
 }

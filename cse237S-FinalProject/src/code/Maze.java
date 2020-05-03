@@ -9,6 +9,12 @@ import doodlepad.*;
 public class Maze extends Pad{
 	int width;
 	int height;
+
+	int playerMovesMade = 0;
+	int numComputers = 0;
+	boolean gameOver = false;
+	Text score;
+  
 	enum Orientation{
 		up, right, down, left
 	}
@@ -30,13 +36,18 @@ public class Maze extends Pad{
 	 * Constructor for a Maze
 	 */
 	public Maze(int width, int height){
-		super(width, height);
+		super(width+300, height+100);
+		this.setEventsEnabled(false);
+		score =  new Text("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5, width+50, 20);
 		this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
 		walls = new boolean[height + 1][width + 1];
-    	drawMaze(true);
+    numComputers = 4;
+		drawMaze(true);
+    	
     	this.initializeComputerSolutions(4);
+    	this.setEventsEnabled(true);
     }
 	
 	/**
@@ -44,26 +55,47 @@ public class Maze extends Pad{
 	 * @param drawMaze indicates whether you should draw maze for the human on the GUI, which would slow down tests by a lot
 	 */
     public Maze(int width, int height, boolean drawMaze) {
-    	super(width, height);
-    	this.width = width;
+		super(width+300, height+100);
+		this.setEventsEnabled(false);
+		score =  new Text("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5, width+50, 20);
+    this.width = width;
 		this.height = height;
 		visitedBFS = new boolean[height + 1][width + 1];
 		walls = new boolean[height + 1][width + 1];
-    	drawMaze(drawMaze);
+		numComputers = 4;
+		drawMaze(drawMaze);
     	
     	this.initializeComputerSolutions(4);
+    	this.setEventsEnabled(true);
 
     	//uncomment below for player1 to solve following right wall
 //    	rightWallBot();
     }
     
+    public Maze(int width, int height, boolean drawMaze, int numComputers) {
+		super(width+300, height+100);
+		this.setEventsEnabled(false);
+		score =  new Text("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5, width+50, 20);
+    	this.width = width;
+		this.height = height;
+		visitedBFS = new boolean[height + 1][width + 1];
+		walls = new boolean[height + 1][width + 1];
+    	
+		this.numComputers = numComputers;
+		drawMaze(drawMaze);
+    	
+    	this.initializeComputerSolutions(numComputers);
+    	this.setEventsEnabled(true);
+
+    	//uncomment below for player1 to solve following right wall
+//    	rightWallBot();
+    }
     
     private void initializeComputerSolutions(int numComputers) {
     	for(int i=0; i< numComputers; i++) {
     		AStar computerSolution = new AStar(walls, (int)computers.get(i).getX(), (int)computers.get(i).getY(), (int)player1.getX(), (int)player1.getY());
     		computerSolutionPaths.add(computerSolution.getPath());
     	}
-
     }
     /**
 	 * Draw the maze
@@ -79,8 +111,7 @@ public class Maze extends Pad{
     	if (drawMaze) {
     		drawWalls();
     	}
-    	this.setupComputers(4);
-
+    	this.setupComputers(this.numComputers);
     	setupPlayer();
     	player1.toFront();
     	}
@@ -100,24 +131,6 @@ public class Maze extends Pad{
     			}
     	}
     }
-	
-	/**
-	 * Removes wall at the beginning
-	 */
-	public void removeStartWall() {
-		for(int row = 0; row < 10; row++) {
-			walls[row][0] = false;
-		}
-	}
-	
-	/**
-	 * Removes wall at the end
-	 */
-	public void removeEndWall() {
-		for(int col = 0; col < 10; col++) {
-			walls[height - col][width] = false;
-		}
-	}
 	
 	/**
 	 * Removes wall at specified row and column to make it a valid maze
@@ -166,15 +179,14 @@ public class Maze extends Pad{
     	for(int row = 0; row <= height; row++) {
     		for(int col = 0; col <= width; col++) {
     			if(walls[row][col])
-	    	    		if(row + 1<= height && walls[row + 1][col]) {
-	    	    			new Line(col, row, col, row + 1);
-	    	    		}
-	    	    		if(col + 1 <= width && walls[row][col + 1]) {
-	    	    			new Line(col, row, col + 1, row);
-	    	    		}    	    	
+    	    		if(row + 1<= height && walls[row + 1][col]) {
+    	    			new Line(col, row, col, row + 1);
+    	    		}
+    	    		if(col + 1 <= width && walls[row][col + 1]) {
+    	    			new Line(col, row, col + 1, row);
+    	    		}    	    	
     		}
     	}
-    	
     	
     }
     
@@ -196,12 +208,22 @@ public class Maze extends Pad{
     		c.toFront();
     	}
     }
+    public boolean gameOver() {
+    	for(Rectangle c: this.computers) {
+    		if(c.getX() == this.player1.getX() && c.getY() == this.player1.getY()) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
     
     /**
 	 * Reads input from keyboard
 	 */
     public void onKeyPressed(String keyText, String keyModifiers) {
-    	this.moveComputers();
+    	playerMovesMade++;
+    	score.setText("Score: "+ playerMovesMade+ " Goal: "+Math.min(width,height)/5);
+
     	if(player1.getX() >= width && player1.getY() >= height - 10) {
     		return;
     	}
@@ -218,6 +240,10 @@ public class Maze extends Pad{
     		moveDown(player1);
     	}
     	
+    	moveComputers();
+    	if(gameOver()) {
+    		endGame();
+    	}
     }
     
     /**
@@ -272,7 +298,6 @@ public class Maze extends Pad{
     		}
     		return true;
     	}
-
     	return false;
     }
     
@@ -337,6 +362,20 @@ public class Maze extends Pad{
 	    		}
 	    	}
     }
+  
+    /**
+	 * Ends the game/level. To be called when player is caught.
+	 */
+    public void endGame() {
+    	this.setEventsEnabled(false);
+    	gameOver = true;
+    	Rectangle endRectangle = new Rectangle (25, 25, 400, 75);
+    	endRectangle.setFillColor(255);
+    	endRectangle.toFront();
+    	Text endText = new Text("You were caught on level "+ this.numComputers+ " Final score: " + playerMovesMade, 50, 50 );
+    	endText.toFront();
+    	
+    }
     
     /**
 	 * Returns maze height
@@ -379,6 +418,13 @@ public class Maze extends Pad{
     }
     
     /**
+	 * @return number of player moves made
+	 */
+    public int getPlayerMovesMade() {
+    	return this.playerMovesMade;
+    }
+    
+    /**
 	 * Runs the computer through the optimal path
 	 * @return if the computer has reached the solution
 	 */
@@ -388,11 +434,11 @@ public class Maze extends Pad{
     	for(int i=0; i<computers.size(); i++) {
     		Rectangle computer = computers.get(i);
     		AStar computerSolution = new AStar(walls, (int)computer.getX(), (int)computer.getY(), (int)player1.getX(), (int)player1.getY());
-    		computerSolutionPaths.set(i, computerSolution.getPath()); 
-    		
+    		computerSolutionPaths.set(i, computerSolution.getPath()); // replaces old computer solution path for each enemy every turn
+   
+    		//retrieve the path from current enemy location to current player location
     		ArrayList<MOVE> computerSolutionPath = computerSolutionPaths.get(i);
-    		
-    		
+	
         	if(computerPositionInSolution < computerSolutionPath.size()) {
         		MOVE compMove = computerSolutionPath.get(0); // Getting the next move
         		if(compMove == MOVE.DOWN) {
